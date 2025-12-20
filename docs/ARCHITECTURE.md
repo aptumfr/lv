@@ -68,20 +68,20 @@ The library avoids heap allocations in the wrapper layer. State management (`lv:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Application Code                      │
-│         (Components, ViewModels, Business Logic)         │
+│                    Application Code                     │
+│         (Components, ViewModels, Business Logic)        │
 ├─────────────────────────────────────────────────────────┤
-│                   lv:: C++ Wrappers                      │
+│                   lv:: C++ Wrappers                     │
 │    ┌─────────────┬─────────────┬─────────────────────┐  │
 │    │   Widgets   │   Layouts   │   Core Services     │  │
 │    │  (34 types) │ (Flex/Grid) │ (Event/State/Timer) │  │
 │    └─────────────┴─────────────┴─────────────────────┘  │
 ├─────────────────────────────────────────────────────────┤
-│                      LVGL C API                          │
-│              (Retained-mode widget system)               │
+│                      LVGL C API                         │
+│              (Retained-mode widget system)              │
 ├─────────────────────────────────────────────────────────┤
-│                   Display Backend                        │
-│               (SDL / X11 / Framebuffer)                  │
+│                   Display Backend                       │
+│               (SDL / X11 / Framebuffer)                 │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -523,7 +523,6 @@ int main() {
 | Item | Reason |
 |------|--------|
 | `lv_chart_series_t*` | Raw pointer - should be visible |
-| `lv_timer_t*` in callbacks | Required by LVGL callback signature |
 | `LV_SYMBOL_*` macros | Required for string concatenation |
 | Low-level draw API | Rarely needed for UI apps |
 | File system API | Platform-specific |

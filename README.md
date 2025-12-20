@@ -68,7 +68,7 @@ private:
 Place LVGL as a sibling directory:
 ```
 parent/
-├── lvgl/          # LVGL 9.x source (git clone https://github.com/lvgl/lvgl)
+├── lvgl/          # LVGL 9.4 source (git clone -b release/v9.4 https://github.com/lvgl/lvgl)
 └── lv/            # This project
 ```
 
@@ -92,7 +92,7 @@ cmake -B build -DLVGL_DIR=/path/to/lvgl
 
 - C++20 compiler (GCC 11+, Clang 14+, MSVC 2022+)
 - CMake 3.20+
-- LVGL 9.x
+- LVGL 9.4
 - X11 or SDL2 (for display backend in examples/demos)
 
 ## Documentation
