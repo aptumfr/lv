@@ -165,7 +165,7 @@ public:
     /// Set shadow
     Button& shadow(int32_t width) noexcept {
         lv_obj_set_style_shadow_width(m_obj, width, 0);
-        lv_obj_set_style_shadow_color(m_obj, lv::colors::dark_gray(), 0);
+        lv_obj_set_style_shadow_color(m_obj, lv::rgb(0x404040), 0);  // dark gray
         return *this;
     }
 

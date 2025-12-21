@@ -3,6 +3,20 @@
 /**
  * @file canvas.hpp
  * @brief Zero-cost wrapper for LVGL canvas widget
+ *
+ * For drawing on canvas, include <lv/draw/draw.hpp> and use:
+ * ```cpp
+ * lv::DrawBuf buf(200, 200, LV_COLOR_FORMAT_ARGB8888);
+ * auto canvas = lv::Canvas::create(parent).size(200, 200);
+ * canvas.draw_buf(buf.get());
+ * canvas.fill_bg(lv::color::white());
+ *
+ * lv::Layer layer;
+ * canvas.init_layer(layer);
+ * lv::draw::rect(layer, rect_dsc, area);
+ * lv::draw::line(layer, line_dsc);
+ * canvas.finish_layer(layer);
+ * ```
  */
 
 #include <lvgl.h>
@@ -12,10 +26,14 @@
 
 namespace lv {
 
+// Forward declaration
+class Layer;
+
 /**
  * @brief Canvas widget wrapper
  *
- * A drawable surface for custom graphics.
+ * A drawable surface for custom graphics. Use with lv::DrawBuf and lv::Layer
+ * from <lv/draw/draw.hpp> for drawing operations.
  *
  * Size: sizeof(void*) - 4 or 8 bytes
  */
@@ -61,6 +79,17 @@ public:
         return *this;
     }
 
+    /// Get pixel color
+    [[nodiscard]] lv_color32_t get_px(int32_t x, int32_t y) const noexcept {
+        return lv_canvas_get_px(m_obj, x, y);
+    }
+
+    /// Set palette color (for indexed formats)
+    Canvas& set_palette(uint8_t index, lv_color32_t color) noexcept {
+        lv_canvas_set_palette(m_obj, index, color);
+        return *this;
+    }
+
     // ==================== Drawing ====================
 
     /// Fill canvas with color
@@ -74,9 +103,31 @@ public:
         lv_canvas_init_layer(m_obj, layer);
     }
 
+    /// Initialize draw layer (Layer wrapper overload)
+    template<typename L>
+    void init_layer(L& layer) noexcept {
+        lv_canvas_init_layer(m_obj, layer.get());
+    }
+
     /// Finish layer and render to canvas
     void finish_layer(lv_layer_t* layer) noexcept {
         lv_canvas_finish_layer(m_obj, layer);
+    }
+
+    /// Finish layer (Layer wrapper overload)
+    template<typename L>
+    void finish_layer(L& layer) noexcept {
+        lv_canvas_finish_layer(m_obj, layer.get());
+    }
+
+    /// Get image descriptor
+    [[nodiscard]] lv_image_dsc_t* get_image() const noexcept {
+        return lv_canvas_get_image(m_obj);
+    }
+
+    /// Get raw buffer pointer
+    [[nodiscard]] const void* get_buf() const noexcept {
+        return lv_canvas_get_buf(m_obj);
     }
 
     // ==================== Copy ====================

@@ -13,18 +13,18 @@
 #include <lv/lv.hpp>
 
 static lv::Color get_color(int index) {
-    lv::Color colors[] = {
-        lv::colors::material_red(),
-        lv::colors::material_blue(),
-        lv::colors::material_green(),
-        lv::colors::material_orange(),
-        lv::colors::material_purple(),
-        lv::colors::material_teal(),
-        lv::colors::material_pink(),
-        lv::colors::material_indigo(),
-        lv::colors::material_cyan(),
+    static const uint32_t color_hexes[] = {
+        0xF44336,  // red
+        0x2196F3,  // blue
+        0x4CAF50,  // green
+        0xFF9800,  // orange
+        0x9C27B0,  // purple
+        0x009688,  // teal
+        0xE91E63,  // pink
+        0x3F51B5,  // indigo
+        0x00BCD4,  // cyan
     };
-    return colors[index % 9];
+    return lv::rgb(color_hexes[index % 9]);
 }
 
 int main() {
@@ -49,7 +49,7 @@ int main() {
     // Title
     lv::Label::create(content)
         .text("Grid Layout Examples")
-        .text_color(lv::colors::blue());
+        .text_color(lv::rgb(0x2196F3));  // blue
 
     // ========== Example 1: Basic 3-column grid ==========
     lv::Label::create(content).text("1. Basic 3-column (1fr each):");
@@ -70,7 +70,7 @@ int main() {
             .bg_color(get_color(i))
             .radius(4)
             .padding(4);
-        lv::Label::create(cell).text(buf).text_color(lv::colors::white()).center();
+        lv::Label::create(cell).text(buf).text_color(lv::colors::white()).center();  // white() exists in C API
         lv::grid_cell(cell).col(i % 3).row(i / 3);
     }
 
@@ -92,7 +92,7 @@ int main() {
             .bg_color(get_color(i + 3))
             .radius(4)
             .padding(4);
-        lv::Label::create(cell).text(labels2[i]).text_color(lv::colors::white()).center();
+        lv::Label::create(cell).text(labels2[i]).text_color(lv::colors::white()).center();  // white() exists in C API
         lv::grid_cell(cell).col(i).row(0);
     }
 
@@ -114,7 +114,7 @@ int main() {
             .bg_color(get_color(i + 6))
             .radius(4)
             .padding(4);
-        lv::Label::create(cell).text(labels3[i]).text_color(lv::colors::white()).center();
+        lv::Label::create(cell).text(labels3[i]).text_color(lv::colors::white()).center();  // white() exists in C API
         lv::grid_cell(cell).col(i).row(0);
     }
 
@@ -132,10 +132,10 @@ int main() {
 
     // Wide header spanning 2 columns
     auto header = lv::vbox(grid4)
-        .bg_color(lv::colors::material_indigo())
+        .bg_color(lv::rgb(0x3F51B5))  // indigo
         .radius(4)
         .padding(8);
-    lv::Label::create(header).text("Header (spans 2 cols)").text_color(lv::colors::white()).center();
+    lv::Label::create(header).text("Header (spans 2 cols)").text_color(lv::colors::white()).center();  // white() exists in C API
     lv::grid_cell(header).col(0).row(0).col_span(2);
 
     // Stats boxes
@@ -146,7 +146,7 @@ int main() {
             .bg_color(get_color(i))
             .radius(4)
             .padding(4);
-        lv::Label::create(cell).text(stats[i]).text_color(lv::colors::white()).center();
+        lv::Label::create(cell).text(stats[i]).text_color(lv::colors::white()).center();  // white() exists in C API
         lv::grid_cell(cell).col(positions[i][0]).row(positions[i][1]);
     }
 

@@ -640,6 +640,19 @@ public:
     [[nodiscard]] int32_t scroll_y() const noexcept {
         return lv_obj_get_scroll_y(obj());
     }
+
+    // ==================== Extended Draw Size ====================
+
+    /// Calculate the extra draw size needed for a part (shadow, outline, etc.)
+    [[nodiscard]] int32_t calculate_ext_draw_size(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_calculate_ext_draw_size(obj(), part);
+    }
+
+    /// Trigger a refresh of the extended draw size
+    Derived& refresh_ext_draw_size() noexcept {
+        lv_obj_refresh_ext_draw_size(obj());
+        return *static_cast<Derived*>(this);
+    }
 };
 
 } // namespace lv

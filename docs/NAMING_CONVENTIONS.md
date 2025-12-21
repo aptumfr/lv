@@ -152,7 +152,7 @@ All member functions use snake_case for consistency:
 
 ```cpp
 button.text("Click me")
-      .bg_color(lv::colors::blue())
+      .bg_color(lv::rgb(0x2196F3))  // blue
       .fill_width()
       .on_click<&MyClass::handle_click>(this);
 

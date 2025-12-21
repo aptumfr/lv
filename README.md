@@ -103,7 +103,7 @@ cmake -B build -DLVGL_DIR=/path/to/lvgl
 
 ## Design Philosophy
 
-**C++ is the only UI language** - no QML, no XML, no code generation, no moc. Just pure C++20.
+**C++ is the only UI language** - no DSL, no XML, no code generation, no moc. Just pure C++20.
 
 ```cpp
 // Type-safe: compiler verifies method exists and signature matches

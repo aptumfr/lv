@@ -104,7 +104,7 @@ public:
         load_fonts();
 
         auto screen = lv::screen_active();
-        screen.bg_color(lv::colors::white());
+        screen.bg_color(lv::colors::white());  // white() exists in C API
 
         // Apply TTF font to screen if loaded
         if (m_main_font) {
@@ -119,7 +119,7 @@ public:
         // Title
         m_title_label = lv::Label::create(content)
             .text(lv::tr("app_title"))
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
         if (m_title_font) {
             m_title_label.font(m_title_font.get());
         }
@@ -141,13 +141,13 @@ public:
         // Greeting
         m_greeting_label = lv::Label::create(content)
             .text(lv::tr("greeting"))
-            .text_color(lv::colors::material_green())
+            .text_color(lv::rgb(0x4CAF50))  // green
             .font(m_title_font ? m_title_font.get() : lv::fonts::montserrat_20);
 
         // Settings section
         m_settings_label = lv::Label::create(content)
             .text(lv::tr("settings"))
-            .text_color(lv::colors::dark_gray());
+            .text_color(lv::rgb(0x404040));  // dark gray
 
         // Dark mode row
         auto dark_row = lv::hbox(content)
@@ -190,7 +190,7 @@ public:
         // Welcome message
         m_welcome_label = lv::Label::create(content)
             .text(lv::tr("welcome_msg"))
-            .text_color(lv::colors::gray());
+            .text_color(lv::rgb(0x808080));  // gray
 
         // Buttons row
         auto buttons = lv::hbox(content)

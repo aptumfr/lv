@@ -20,17 +20,17 @@ class AnimationDemo {
     struct EasingConfig {
         const char* name;
         lv::anim_path_cb path;
-        lv::Color (*color)();  // Function pointer since colors aren't constexpr
+        uint32_t color_hex;  // Color as hex value
     };
 
     static constexpr std::array kEasings = {
-        EasingConfig{"Linear",     lv::anim_path::linear,      lv::colors::material_blue},
-        EasingConfig{"Ease In",    lv::anim_path::ease_in,     lv::colors::material_red},
-        EasingConfig{"Ease Out",   lv::anim_path::ease_out,    lv::colors::material_green},
-        EasingConfig{"Ease InOut", lv::anim_path::ease_in_out, lv::colors::material_purple},
-        EasingConfig{"Overshoot",  lv::anim_path::overshoot,   lv::colors::material_orange},
-        EasingConfig{"Bounce",     lv::anim_path::bounce,      lv::colors::material_teal},
-        EasingConfig{"Step",       lv::anim_path::step,        lv::colors::material_pink},
+        EasingConfig{"Linear",     lv::anim_path::linear,      0x2196F3},  // blue
+        EasingConfig{"Ease In",    lv::anim_path::ease_in,     0xF44336},  // red
+        EasingConfig{"Ease Out",   lv::anim_path::ease_out,    0x4CAF50},  // green
+        EasingConfig{"Ease InOut", lv::anim_path::ease_in_out, 0x9C27B0},  // purple
+        EasingConfig{"Overshoot",  lv::anim_path::overshoot,   0xFF9800},  // orange
+        EasingConfig{"Bounce",     lv::anim_path::bounce,      0x009688},  // teal
+        EasingConfig{"Step",       lv::anim_path::step,        0xE91E63},  // pink
     };
 
     static constexpr size_t kBoxCount = kEasings.size();
@@ -61,12 +61,12 @@ public:
         // Title
         lv::Label::create(content)
             .text("Animation Easing Functions")
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
 
         // Create boxes for each easing type from the constexpr table
         for (size_t i = 0; i < kEasings.size(); ++i) {
             const auto& cfg = kEasings[i];
-            m_boxes[i] = create_anim_box(content, cfg.name, cfg.path, cfg.color());
+            m_boxes[i] = create_anim_box(content, cfg.name, cfg.path, lv::rgb(cfg.color_hex));
         }
 
         // Control buttons
@@ -93,7 +93,7 @@ public:
         lv::Label::create(content)
             .text("Run: play once | Auto: repeat every 5s\n"
                   "Watch how easings accelerate differently!")
-            .text_color(lv::colors::gray());
+            .text_color(lv::rgb(0x808080));  // gray
     }
 
 private:
@@ -115,7 +115,7 @@ private:
             .grow(1)
             .height(34)
             .padding(0)
-            .bg_color(lv::colors::light_gray())
+            .bg_color(lv::rgb(0xC0C0C0))  // light gray
             .bg_opa(lv::opa::_20)
             .radius(4)
             .border_width(0)

@@ -34,8 +34,8 @@ struct BarcodeEncoding {
  * @code
  *   lv::Barcode(parent)
  *       .scale(2)
- *       .dark_color(lv::colors::black)
- *       .light_color(lv::colors::white)
+ *       .dark_color(lv::colors::black())
+ *       .light_color(lv::colors::white())
  *       .data("12345678")
  *       .center();
  * @endcode

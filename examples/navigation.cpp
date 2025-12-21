@@ -56,7 +56,7 @@ private:
     }
 
     void create_home_screen() {
-        m_home.bg_color(lv::colors::white())
+        m_home.bg_color(lv::colors::white())  // white() exists in C API
               .scrollbar_mode(lv::kScrollbarMode::off);
 
         auto content = lv::vbox(m_home)
@@ -67,7 +67,7 @@ private:
         // Header
         lv::Label::create(content)
             .text("Home")
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
 
         lv::Label::create(content)
             .text("Welcome to the Navigation Demo!\nSelect a destination:");
@@ -93,7 +93,7 @@ private:
         auto wifi_row = lv::hbox(content)
             .fill_width()
             .padding(10)
-            .bg_color(lv::colors::white())
+            .bg_color(lv::colors::white())  // white() exists in C API
             .radius(8);
         lv::Label::create(wifi_row).text(LV_SYMBOL_WIFI " WiFi").grow(1);
         lv::Switch::create(wifi_row).on();
@@ -101,7 +101,7 @@ private:
         auto bt_row = lv::hbox(content)
             .fill_width()
             .padding(10)
-            .bg_color(lv::colors::white())
+            .bg_color(lv::colors::white())  // white() exists in C API
             .radius(8);
         lv::Label::create(bt_row).text(LV_SYMBOL_BLUETOOTH " Bluetooth").grow(1);
         lv::Switch::create(bt_row).off();
@@ -109,7 +109,7 @@ private:
         auto volume_row = lv::vbox(content)
             .fill_width()
             .padding(10)
-            .bg_color(lv::colors::white())
+            .bg_color(lv::colors::white())  // white() exists in C API
             .radius(8)
             .gap(5);
         lv::Label::create(volume_row).text(LV_SYMBOL_VOLUME_MAX " Volume");
@@ -120,7 +120,7 @@ private:
         auto brightness_row = lv::vbox(content)
             .fill_width()
             .padding(10)
-            .bg_color(lv::colors::white())
+            .bg_color(lv::colors::white())  // white() exists in C API
             .radius(8)
             .gap(5);
         lv::Label::create(brightness_row).text("Brightness");
@@ -145,24 +145,24 @@ private:
             .fill_width()
             .padding(20)
             .gap(10)
-            .bg_color(lv::colors::white())
+            .bg_color(lv::colors::white())  // white() exists in C API
             .radius(12)
             .align_items(lv::align::center);
 
         // Avatar placeholder
         auto avatar = lv::vbox(card)
             .size(80, 80)
-            .bg_color(lv::colors::blue())
+            .bg_color(lv::rgb(0x2196F3))  // blue
             .radius(lv::kRadius::circle)
             .align_items(lv::align::center);
         lv::Label::create(avatar)
             .text(lv::symbol::home)
-            .text_color(lv::colors::white())
+            .text_color(lv::colors::white())  // white() exists in C API
             .center();
 
         lv::Label::create(card)
             .text("John Doe")
-            .text_color(lv::colors::dark_gray());
+            .text_color(lv::rgb(0x404040));  // dark gray
 
         lv::Label::create(card)
             .text("john.doe@example.com");
@@ -192,12 +192,12 @@ private:
             .fill_width()
             .padding(20)
             .gap(10)
-            .bg_color(lv::colors::white())
+            .bg_color(lv::colors::white())  // white() exists in C API
             .radius(12);
 
         lv::Label::create(card)
             .text("lv:: C++20 Bindings")
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
 
         lv::Label::create(card)
             .text("Version: 0.1.0");
@@ -226,7 +226,7 @@ private:
 
         lv::Label::create(header)
             .text(title)
-            .text_color(lv::colors::blue())
+            .text_color(lv::rgb(0x2196F3))  // blue
             .grow(1);
     }
 
@@ -234,13 +234,13 @@ private:
         auto box = lv::vbox(parent)
             .grow(1)
             .padding(10)
-            .bg_color(lv::colors::white())
+            .bg_color(lv::colors::white())  // white() exists in C API
             .radius(8)
             .align_items(lv::align::center);
 
         lv::Label::create(box)
             .text(value)
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
 
         lv::Label::create(box)
             .text(label);

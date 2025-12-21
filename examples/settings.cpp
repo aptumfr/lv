@@ -121,7 +121,7 @@ public:
         lv::Button::create(buttons)
             .text("Save")
             .size(100, 40)
-            .bg(lv::colors::blue())
+            .bg(lv::rgb(0x2196F3))  // blue
             .on_click<&SettingsScreen::on_save>(this);
 
         return root;

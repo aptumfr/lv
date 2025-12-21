@@ -35,7 +35,7 @@ class FormApp {
 public:
     void create() {
         auto screen = lv::screen_active();
-        screen.bg_color(lv::colors::white());
+        screen.bg_color(lv::colors::white());  // white() exists in C API
 
         auto content = lv::vbox(screen)
             .fill()
@@ -45,12 +45,12 @@ public:
         // Title
         lv::Label::create(content)
             .text("Registration Form")
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
 
         // Email field
         lv::Label::create(content)
             .text("Email:")
-            .text_color(lv::colors::dark_gray());
+            .text_color(lv::rgb(0x404040));  // dark gray
 
         m_email_ta = lv::Textarea::create(content)
             .one_line(true)
@@ -63,7 +63,7 @@ public:
         // Password field
         lv::Label::create(content)
             .text("Password:")
-            .text_color(lv::colors::dark_gray());
+            .text_color(lv::rgb(0x404040));  // dark gray
 
         m_password_ta = lv::Textarea::create(content)
             .one_line(true)
@@ -77,7 +77,7 @@ public:
         // Country dropdown
         lv::Label::create(content)
             .text("Country:")
-            .text_color(lv::colors::dark_gray());
+            .text_color(lv::rgb(0x404040));  // dark gray
 
         lv::Dropdown::create(content)
             .options("United States\nUnited Kingdom\nCanada\nGermany\nFrance\nJapan\nOther")
@@ -122,25 +122,25 @@ private:
         // Validate
         if (!is_valid_email(email)) {
             m_status_lbl.text("Invalid email address")
-                .text_color(lv::colors::red());
+                .text_color(lv::rgb(0xF44336));  // red
             return;
         }
 
         if (!is_valid_password(password)) {
             m_status_lbl.text("Password must be at least 6 characters")
-                .text_color(lv::colors::red());
+                .text_color(lv::rgb(0xF44336));  // red
             return;
         }
 
         if (!terms) {
             m_status_lbl.text("Please accept the terms")
-                .text_color(lv::colors::red());
+                .text_color(lv::rgb(0xF44336));  // red
             return;
         }
 
         // Success
         m_status_lbl.text("Registration successful!")
-            .text_color(lv::colors::material_green());
+            .text_color(lv::rgb(0x4CAF50));  // green
     }
 };
 

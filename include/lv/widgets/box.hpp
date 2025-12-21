@@ -11,7 +11,7 @@
  * // Create a box using the static factory
  * auto box = lv::Box::create(parent)
  *     .size(100, 50)
- *     .bg_color(lv::colors::blue());
+ *     .bg_color(lv::rgb(0x2196F3));  // blue
  *
  * // Wrap an existing lv_obj_t*
  * auto wrapped = lv::Box(lv::wrap, raw_ptr);
@@ -63,7 +63,7 @@ public:
      * @code
      * auto box = lv::Box::create(parent)
      *     .size(100, 50)
-     *     .bg_color(lv::colors::red());
+     *     .bg_color(lv::rgb(0xF44336));  // red
      * @endcode
      */
     [[nodiscard]] static Box create(lv_obj_t* parent) {

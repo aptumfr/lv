@@ -1,7 +1,7 @@
 # Examples - supports native X11 or SDL backends
 
 # List of example executables
-set(EXAMPLES hello counter settings chart navigation animation form grid_demo translation_demo lottie_demo)
+set(EXAMPLES hello counter settings chart navigation animation form grid_demo translation_demo lottie_demo canvas_draw)
 
 # Create executables
 foreach(example ${EXAMPLES})

@@ -27,8 +27,8 @@ namespace lv {
  * @code
  *   lv::QRCode(parent)
  *       .size(150)
- *       .dark_color(lv::colors::black)
- *       .light_color(lv::colors::white)
+ *       .dark_color(lv::colors::black())
+ *       .light_color(lv::colors::white())
  *       .data("https://lvgl.io")
  *       .center();
  * @endcode

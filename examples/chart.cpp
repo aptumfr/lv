@@ -48,7 +48,7 @@ public:
         // Title
         lv::Label::create(root)
             .text("Real-time Chart Demo")
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
 
         // Create chart
         auto chart = lv::Chart::create(root)
@@ -62,8 +62,8 @@ public:
         m_chart = new lv::Chart(lv::wrap, chart.get());
 
         // Add series
-        m_ser1 = m_chart->add_series(lv::colors::blue(), lv::Chart::Axis::primary_y);
-        m_ser2 = m_chart->add_series(lv::colors::red(), lv::Chart::Axis::primary_y);
+        m_ser1 = m_chart->add_series(lv::rgb(0x2196F3), lv::Chart::Axis::primary_y);  // blue
+        m_ser2 = m_chart->add_series(lv::rgb(0xF44336), lv::Chart::Axis::primary_y);  // red
 
         // Initial data
         generate_sine_data(m_ser1, *m_chart, 0);

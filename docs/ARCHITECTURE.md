@@ -4,7 +4,7 @@
 
 This library provides **zero-cost C++20 abstractions** over LVGL's C API, enabling modern, type-safe, declarative UI development while maintaining full compatibility with LVGL's retained-mode widget system.
 
-The design philosophy is: **C++ is the only UI language** - no QML, no XML, no code generation, no moc. Just pure C++20 with CMake.
+The design philosophy is: **C++ is the only UI language** - no DSL, no XML, no code generation, no moc. Just pure C++20 with CMake.
 
 ---
 
@@ -29,7 +29,7 @@ All widget configuration uses method chaining for readable, declarative UI code:
 lv::Button(parent)
     .text("Click me")
     .size(120, 40)
-    .bg_color(lv::colors::blue())
+    .bg_color(lv::rgb(0x2196F3))  // blue
     .on_click<&MyClass::handle_click>(this);
 ```
 
@@ -55,6 +55,7 @@ This is **refactor-safe** - renaming a method updates all references via the com
 - `lv::ObjectView` - Non-owning view (default for most widgets)
 - `lv::Timer` - RAII timer management
 - `lv::Style` - RAII style management
+- `lv::DrawBuf` - RAII draw buffer for Canvas
 
 Most widgets use non-owning semantics because LVGL's parent-child hierarchy manages lifetime.
 
@@ -146,6 +147,35 @@ public:
 | `x11_display.hpp` | X11 backend for Linux desktop |
 | `sdl_display.hpp` | SDL2 backend for cross-platform |
 | `fb_display.hpp` | Framebuffer backend for embedded |
+
+### Draw API (`include/lv/draw/`)
+
+Low-level drawing API for Canvas widget and custom graphics.
+
+| File | Purpose |
+|------|---------|
+| `draw.hpp` | Umbrella header for all draw types |
+| `draw_buf.hpp` | RAII `DrawBuf` for canvas buffers |
+| `layer.hpp` | `Layer` wrapper for draw operations |
+| `primitives.hpp` | Helper functions for `lv_area_t`, `lv_point_t` |
+| `draw_rect.hpp` | `FillDsc`, `BorderDsc`, `BoxShadowDsc`, `RectDsc` |
+| `draw_line.hpp` | `LineDsc` for line drawing |
+| `draw_arc.hpp` | `ArcDsc` for arc drawing |
+| `draw_triangle.hpp` | `TriangleDsc` for triangle drawing |
+| `draw_label.hpp` | `LabelDsc`, `LetterDsc` for text |
+| `draw_image.hpp` | `ImageDsc` for image drawing |
+
+**Example**:
+```cpp
+lv::DrawBuf buf(200, 200, LV_COLOR_FORMAT_ARGB8888);
+canvas.draw_buf(buf.get());
+
+lv::Layer layer;
+canvas.init_layer(layer);
+lv::draw::rect(layer, rect_dsc, lv::area(10, 10, 100, 100));
+lv::draw::line(layer, line_dsc);
+canvas.finish_layer(layer);
+```
 
 ---
 
@@ -389,7 +419,7 @@ nav.replace<HomeScreen>();
 
 ```cpp
 button
-    .bg_color(lv::colors::blue())
+    .bg_color(lv::rgb(0x2196F3))
     .text_color(lv::colors::white())
     .radius(8)
     .padding(12);
@@ -400,7 +430,7 @@ button
 ```cpp
 lv::Style button_style;
 button_style
-    .bg_color(lv::colors::blue())
+    .bg_color(lv::rgb(0x2196F3))
     .radius(8)
     .padding(12);
 
@@ -452,6 +482,17 @@ include/lv/
 │   ├── button.hpp
 │   ├── chart.hpp
 │   └── ... (34 widgets)
+├── draw/
+│   ├── draw.hpp           # Umbrella header
+│   ├── draw_buf.hpp       # DrawBuf RAII wrapper
+│   ├── layer.hpp          # Layer wrapper
+│   ├── primitives.hpp     # area(), point() helpers
+│   ├── draw_rect.hpp      # FillDsc, BorderDsc, RectDsc
+│   ├── draw_line.hpp      # LineDsc
+│   ├── draw_arc.hpp       # ArcDsc
+│   ├── draw_triangle.hpp  # TriangleDsc
+│   ├── draw_label.hpp     # LabelDsc, LetterDsc
+│   └── draw_image.hpp     # ImageDsc
 ├── layout/
 │   ├── flex.hpp           # hbox, vbox
 │   └── grid.hpp           # CSS Grid
@@ -481,7 +522,7 @@ public:
 
         lv::Label(root)
             .text("Hello, LVGL!")
-            .text_color(lv::colors::blue());
+            .text_color(lv::rgb(0x2196F3));  // blue
 
         lv::Label(root)
             .bind_text(counter, "Counter: %d");
@@ -524,7 +565,6 @@ int main() {
 |------|--------|
 | `lv_chart_series_t*` | Raw pointer - should be visible |
 | `LV_SYMBOL_*` macros | Required for string concatenation |
-| Low-level draw API | Rarely needed for UI apps |
 | File system API | Platform-specific |
 
 ---
