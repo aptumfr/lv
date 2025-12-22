@@ -327,6 +327,11 @@ public:
         return *this;
     }
 
+    Style& blend_mode(lv_blend_mode_t mode) noexcept {
+        lv_style_set_blend_mode(&m_style, mode);
+        return *this;
+    }
+
     // ==================== Text ====================
 
     Style& text_color(lv_color_t color) noexcept {
@@ -662,6 +667,11 @@ public:
 
     Derived& opa(lv_opa_t opa, lv_style_selector_t sel = 0) noexcept {
         lv_obj_set_style_opa(obj(), opa, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& blend_mode(lv_blend_mode_t mode, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_blend_mode(obj(), mode, sel);
         return *static_cast<Derived*>(this);
     }
 

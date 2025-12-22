@@ -159,6 +159,20 @@ public:
         lv_obj_set_style_image_opa(m_obj, opa, 0);
         return *this;
     }
+
+    // ==================== Blend Mode ====================
+
+    /// Set blend mode
+    Image& blend_mode(lv_blend_mode_t mode) noexcept {
+        lv_image_set_blend_mode(m_obj, mode);
+        return *this;
+    }
+
+    /// Get blend mode
+    [[nodiscard]] lv_blend_mode_t blend_mode() const noexcept {
+        return lv_image_get_blend_mode(m_obj);
+    }
+
 };
 
 } // namespace lv
