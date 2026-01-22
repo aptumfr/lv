@@ -48,6 +48,11 @@
  * text.text("Hello").font(&lv_font_montserrat_16).color(lv::color::black());
  * lv::draw::label(layer, text, lv::area(10, 150, 190, 180));
  *
+ * // Apply a rounded mask
+ * lv::MaskRectDsc mask;
+ * mask.area(0, 0, 200, 200).radius(20);
+ * lv::draw::mask_rect(layer, mask);
+ *
  * canvas.finish_layer(layer);
  * ```
  */
@@ -68,6 +73,7 @@
 #include "draw_triangle.hpp" // TriangleDsc
 #include "draw_label.hpp"    // LabelDsc, LetterDsc
 #include "draw_image.hpp"    // ImageDsc
+#include "draw_mask.hpp"     // MaskRectDsc
 #include "draw_task.hpp"     // DrawTaskView, draw system utilities
 
 // 3D texture drawing (requires LV_USE_3DTEXTURE)
@@ -78,5 +84,3 @@
 
 // Vector graphics (requires LV_USE_VECTOR_GRAPHIC)
 #include "draw_vector.hpp"   // VectorPath, VectorDsc
-
-// Note: lv_draw_mask_rect_dsc_t is internal to LVGL (private header)

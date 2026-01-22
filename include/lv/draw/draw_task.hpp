@@ -6,6 +6,7 @@
  */
 
 #include <lvgl.h>
+#include <src/draw/lv_draw_mask.h>
 
 namespace lv {
 
@@ -91,6 +92,11 @@ public:
     /// Get as triangle descriptor (if type is TRIANGLE)
     [[nodiscard]] lv_draw_triangle_dsc_t* triangle_dsc() const noexcept {
         return m_task ? lv_draw_task_get_triangle_dsc(m_task) : nullptr;
+    }
+
+    /// Get as mask rectangle descriptor (if type is MASK_RECTANGLE)
+    [[nodiscard]] lv_draw_mask_rect_dsc_t* mask_rect_dsc() const noexcept {
+        return m_task ? lv_draw_task_get_mask_rect_dsc(m_task) : nullptr;
     }
 };
 

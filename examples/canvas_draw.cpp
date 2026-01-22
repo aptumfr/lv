@@ -3,8 +3,8 @@
  * @brief Demonstrates the Canvas widget with the draw API
  *
  * Shows how to use lv::DrawBuf, lv::Layer, and the various draw
- * descriptors (FillDsc, LineDsc, ArcDsc, LabelDsc, RectDsc) to
- * create custom graphics on a canvas.
+ * descriptors (FillDsc, LineDsc, ArcDsc, LabelDsc, RectDsc, MaskRectDsc)
+ * to create custom graphics on a canvas.
  */
 
 #include <lv/lv.hpp>
@@ -50,6 +50,9 @@ private:
 
         // 4. Draw text
         draw_text(layer);
+
+        // 5. Draw masked content (demonstrates MaskRectDsc)
+        draw_masked_content(layer);
 
         // Finish the layer to render everything
         m_canvas.finish_layer(layer);
@@ -176,6 +179,22 @@ private:
         lv::draw::label(layer, "Arcs", lv::area(10, 245, 100, 260),
                         &lv_font_montserrat_12, lv::rgb(100, 100, 100));
     }
+
+    void draw_masked_content(lv::Layer& layer) {
+        // MaskRectDsc clips all previously drawn content to a rounded rectangle.
+        // Content outside the mask area will be cleared (or kept, depending on settings).
+
+        // Apply a rounded rectangle mask to the entire canvas
+        // This gives the canvas rounded corners
+        lv::MaskRectDsc mask;
+        mask.area(0, 0, 299, 299)  // Canvas bounds
+            .radius(20);           // Rounded corners with 20px radius
+        lv::draw::mask_rect(layer, mask);
+
+        // You can also use masks to create "windows" into content:
+        // mask.area(50, 50, 150, 150).radius(10).keep_outside(true);
+        // This would only show content inside the 50,50 to 150,150 area
+    }
 };
 
 int main() {
@@ -183,6 +202,11 @@ int main() {
 
     // Create display
     lv::X11Display display("Canvas Draw Demo", 400, 400, &lv::cursor_arrow);
+
+    // Dark background to see the mask effect (rounded corners)
+    lv::screen_active()
+        .bg_color(lv::rgb(40, 40, 50))
+        .bg_opa(lv::opa::cover);
 
     // Create demo
     static CanvasDrawDemo demo;
