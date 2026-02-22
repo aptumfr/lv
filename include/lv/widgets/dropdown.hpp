@@ -195,4 +195,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Dropdown>() noexcept { return &lv_dropdown_class; }
+}
+
 } // namespace lv

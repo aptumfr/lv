@@ -200,4 +200,9 @@ public:
 
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Textarea>() noexcept { return &lv_textarea_class; }
+}
+
 } // namespace lv

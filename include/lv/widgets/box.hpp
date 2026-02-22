@@ -82,4 +82,9 @@ public:
     // are inherited from ObjectMixin<Box>.
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Box>() noexcept { return &lv_obj_class; }
+}
+
 } // namespace lv

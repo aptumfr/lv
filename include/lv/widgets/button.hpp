@@ -226,4 +226,9 @@ inline Button toggle_button(ObjectView parent, const char* text) {
 }
 #endif // LV_USE_LABEL
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Button>() noexcept { return &lv_button_class; }
+}
+
 } // namespace lv

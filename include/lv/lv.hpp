@@ -47,6 +47,7 @@
 #include "core/version.hpp"
 #include "core/constants.hpp"
 #include "core/object.hpp"
+#include "core/widget_cast.hpp"
 #include "core/event.hpp"
 #include "core/style.hpp"
 #include "core/color.hpp"

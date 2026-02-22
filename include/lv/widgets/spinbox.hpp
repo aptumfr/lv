@@ -134,4 +134,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Spinbox>() noexcept { return &lv_spinbox_class; }
+}
+
 } // namespace lv

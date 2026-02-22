@@ -117,4 +117,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Checkbox>() noexcept { return &lv_checkbox_class; }
+}
+
 } // namespace lv

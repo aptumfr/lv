@@ -137,4 +137,9 @@ public:
 #endif
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Switch>() noexcept { return &lv_switch_class; }
+}
+
 } // namespace lv

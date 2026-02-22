@@ -79,4 +79,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<List>() noexcept { return &lv_list_class; }
+}
+
 } // namespace lv

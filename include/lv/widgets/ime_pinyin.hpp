@@ -104,6 +104,11 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<IMEPinyin>() noexcept { return &lv_ime_pinyin_class; }
+}
+
 } // namespace lv
 
 #endif // LV_USE_IME_PINYIN

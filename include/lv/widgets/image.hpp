@@ -175,4 +175,9 @@ public:
 
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Image>() noexcept { return &lv_image_class; }
+}
+
 } // namespace lv

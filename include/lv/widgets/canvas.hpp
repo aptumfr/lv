@@ -147,4 +147,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Canvas>() noexcept { return &lv_canvas_class; }
+}
+
 } // namespace lv

@@ -212,4 +212,9 @@ public:
 #endif
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Slider>() noexcept { return &lv_slider_class; }
+}
+
 } // namespace lv

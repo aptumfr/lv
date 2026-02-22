@@ -195,6 +195,11 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<FileExplorer>() noexcept { return &lv_file_explorer_class; }
+}
+
 } // namespace lv
 
 #endif // LV_USE_FILE_EXPLORER

@@ -120,4 +120,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Table>() noexcept { return &lv_table_class; }
+}
+
 } // namespace lv

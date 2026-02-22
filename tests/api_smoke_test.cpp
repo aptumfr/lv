@@ -11,8 +11,11 @@
 
 #include <lv/lv.hpp>
 #include <lv/core/verify.hpp>
+#include <lv/core/widget_cast.hpp>
 #include <lv/draw/draw_mask.hpp>
 #include <lv/draw/draw_task.hpp>
+#include <span>
+#include <optional>
 
 // ============================================================
 // user_data: no ambiguity on widgets or raw ObjectView
@@ -263,6 +266,90 @@ struct Dummy {
     }
 }
 #endif
+
+// ============================================================
+// widget_cast: type-safe downcasting
+// ============================================================
+
+[[maybe_unused]] static void test_widget_cast() {
+    lv::Button btn;
+
+    // widget_cast returns std::optional<Widget>
+    std::optional<lv::Button> maybe_btn = lv::widget_cast<lv::Button>(btn);
+    (void)maybe_btn;
+
+    // widget_cast on null ObjectView returns nullopt
+    lv::ObjectView null_obj;
+    std::optional<lv::Slider> maybe_slider = lv::widget_cast<lv::Slider>(null_obj);
+    (void)maybe_slider;
+
+    // widget_cast to wrong type returns nullopt (verified at runtime)
+    std::optional<lv::Label> maybe_label = lv::widget_cast<lv::Label>(btn);
+    (void)maybe_label;
+}
+
+// ============================================================
+// find_parent: walk parent chain for a widget type
+// ============================================================
+
+[[maybe_unused]] static void test_find_parent() {
+    lv::Button btn;
+
+    // find_parent returns std::optional<Widget>
+    std::optional<lv::Tabview> maybe_tv = lv::find_parent<lv::Tabview>(btn);
+    (void)maybe_tv;
+}
+
+// ============================================================
+// for_each_child: safe child iteration
+// ============================================================
+
+[[maybe_unused]] static void test_for_each_child() {
+    lv::Box box;
+
+    // Lambda-based iteration — compiles with both ObjectView and widget types
+    lv::for_each_child(box, [](lv::ObjectView child) {
+        [[maybe_unused]] int32_t w = child.get_width();
+        (void)w;
+    });
+}
+
+// ============================================================
+// std::span overloads
+// ============================================================
+
+[[maybe_unused]] static void test_span_overloads() {
+    // Line: span<const lv_point_precise_t>
+#if LV_USE_LINE
+    {
+        lv::Line line;
+        lv_point_precise_t pts[] = {{0, 0}, {100, 100}};
+        std::span<const lv_point_precise_t> sp(pts);
+        line.points(sp);
+    }
+#endif
+
+    // Chart: span<const int32_t>
+#if LV_USE_CHART
+    {
+        lv::Chart chart;
+        lv_chart_series_t* ser = nullptr;
+        int32_t vals[] = {10, 20, 30};
+        std::span<const int32_t> sv(vals);
+        chart.set_series_values(ser, sv);
+    }
+#endif
+
+    // Calendar: span<lv_calendar_date_t>
+#if LV_USE_CALENDAR
+    {
+        lv::Calendar cal;
+        lv_calendar_date_t dates[] = {{2026, 1, 1}, {2026, 12, 25}};
+        std::span<lv_calendar_date_t> sd(dates);
+        cal.highlighted_dates(sd);
+    }
+#endif
+}
 
 int main() {
     return 0;

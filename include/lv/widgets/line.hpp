@@ -6,6 +6,7 @@
  */
 
 #include <lvgl.h>
+#include <span>
 #include "../core/object.hpp"
 #include "../core/event.hpp"
 #include "../core/style.hpp"
@@ -49,6 +50,11 @@ public:
         return *this;
     }
 
+    /// Set points from span (must remain valid while line exists)
+    Line& points(std::span<const lv_point_precise_t> pts) noexcept {
+        return points(pts.data(), static_cast<uint32_t>(pts.size()));
+    }
+
     // ==================== Appearance ====================
 
     /// Invert Y axis (0 at bottom instead of top)
@@ -88,5 +94,10 @@ public:
         return *this;
     }
 };
+
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Line>() noexcept { return &lv_line_class; }
+}
 
 } // namespace lv

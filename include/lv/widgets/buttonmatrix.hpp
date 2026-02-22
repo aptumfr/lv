@@ -131,4 +131,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<ButtonMatrix>() noexcept { return &lv_buttonmatrix_class; }
+}
+
 } // namespace lv

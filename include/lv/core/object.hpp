@@ -735,4 +735,27 @@ public:
     }
 };
 
+// ==================== Widget Type Trait ====================
+
+namespace detail {
+    /// Trait mapping a C++ widget type to its lv_obj_class_t.
+    /// Specializations are provided in each widget header.
+    /// The primary template is intentionally deleted so that
+    /// instantiating it for an unregistered type is a compile error.
+    template<typename W>
+    const lv_obj_class_t* widget_lv_class() noexcept = delete;
+}
+
+// ==================== Safe Child Iteration ====================
+
+/// Iterate over all children of a parent object.
+/// Caches child_count() before the loop — do not add/remove children
+/// inside the callback. Read-only traversal only.
+template<typename Fn>
+void for_each_child(ObjectView parent, Fn&& fn) {
+    const uint32_t n = parent.child_count();
+    for (uint32_t i = 0; i < n; ++i)
+        fn(parent.child(static_cast<int32_t>(i)));
+}
+
 } // namespace lv

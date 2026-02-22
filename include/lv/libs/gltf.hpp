@@ -320,6 +320,14 @@ public:
     }
 };
 
+// LVGL defines lv_gltf_class but omits the extern declaration in the public header.
+extern "C" { extern const lv_obj_class_t lv_gltf_class; }
+
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<GLTF>() noexcept { return &lv_gltf_class; }
+}
+
 } // namespace lv
 
 #endif // LV_USE_GLTF

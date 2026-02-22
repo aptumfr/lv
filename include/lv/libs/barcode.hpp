@@ -157,6 +157,11 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Barcode>() noexcept { return &lv_barcode_class; }
+}
+
 } // namespace lv
 
 #endif // LV_USE_BARCODE

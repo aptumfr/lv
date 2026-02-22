@@ -112,4 +112,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<ImageButton>() noexcept { return &lv_imagebutton_class; }
+}
+
 } // namespace lv

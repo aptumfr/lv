@@ -75,4 +75,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Tileview>() noexcept { return &lv_tileview_class; }
+}
+
 } // namespace lv

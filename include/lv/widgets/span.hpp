@@ -166,4 +166,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Spangroup>() noexcept { return &lv_spangroup_class; }
+}
+
 } // namespace lv

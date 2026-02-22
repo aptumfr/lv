@@ -96,6 +96,11 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Texture3D>() noexcept { return &lv_3dtexture_class; }
+}
+
 } // namespace lv
 
 #endif // LV_USE_3DTEXTURE

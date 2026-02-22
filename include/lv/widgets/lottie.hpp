@@ -184,6 +184,14 @@ public:
     }
 };
 
+// LVGL defines lv_lottie_class but omits the extern declaration in the public header.
+extern "C" { extern const lv_obj_class_t lv_lottie_class; }
+
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Lottie>() noexcept { return &lv_lottie_class; }
+}
+
 } // namespace lv
 
 #endif // LV_USE_LOTTIE

@@ -136,6 +136,11 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<GIF>() noexcept { return &lv_gif_class; }
+}
+
 } // namespace lv
 
 #endif // LV_USE_GIF

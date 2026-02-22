@@ -113,4 +113,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Msgbox>() noexcept { return &lv_msgbox_class; }
+}
+
 } // namespace lv

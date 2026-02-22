@@ -85,4 +85,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Spinner>() noexcept { return &lv_spinner_class; }
+}
+
 } // namespace lv

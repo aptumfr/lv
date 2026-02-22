@@ -6,6 +6,7 @@
  */
 
 #include <lvgl.h>
+#include <span>
 #include "../core/version.hpp"
 #include "../core/object.hpp"
 #include "../core/event.hpp"
@@ -338,6 +339,11 @@ public:
         return *this;
     }
 
+    /// Set series values from span
+    Chart& set_series_values(lv_chart_series_t* ser, std::span<const int32_t> values) noexcept {
+        return set_series_values(ser, values.data(), values.size());
+    }
+
     /// Set series value by ID
     Chart& set_series_value_by_id(lv_chart_series_t* ser, uint32_t id, int32_t value) noexcept {
         lv_chart_set_series_value_by_id(m_obj, ser, id, value);
@@ -382,5 +388,10 @@ public:
         return *this;
     }
 };
+
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Chart>() noexcept { return &lv_chart_class; }
+}
 
 } // namespace lv

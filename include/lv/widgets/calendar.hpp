@@ -6,6 +6,7 @@
  */
 
 #include <lvgl.h>
+#include <span>
 #include "../core/object.hpp"
 #include "../core/event.hpp"
 #include "../core/style.hpp"
@@ -73,6 +74,11 @@ public:
         return *this;
     }
 
+    /// Set highlighted dates from span (array must remain valid)
+    Calendar& highlighted_dates(std::span<lv_calendar_date_t> dates) noexcept {
+        return highlighted_dates(dates.data(), dates.size());
+    }
+
     /// Get highlighted dates
     [[nodiscard]] const lv_calendar_date_t* highlighted_dates() const noexcept {
         return lv_calendar_get_highlighted_dates(m_obj);
@@ -111,5 +117,10 @@ public:
         return *this;
     }
 };
+
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Calendar>() noexcept { return &lv_calendar_class; }
+}
 
 } // namespace lv

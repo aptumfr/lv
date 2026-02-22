@@ -248,4 +248,9 @@ public:
 #endif
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Label>() noexcept { return &lv_label_class; }
+}
+
 } // namespace lv

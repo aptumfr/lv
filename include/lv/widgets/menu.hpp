@@ -144,4 +144,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Menu>() noexcept { return &lv_menu_class; }
+}
+
 } // namespace lv

@@ -90,4 +90,9 @@ public:
     }
 };
 
+namespace detail {
+    template<> inline const lv_obj_class_t*
+    widget_lv_class<Led>() noexcept { return &lv_led_class; }
+}
+
 } // namespace lv
