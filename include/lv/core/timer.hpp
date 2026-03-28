@@ -165,10 +165,15 @@ public:
         return *this;
     }
 
-    /// Run once then delete
+    /// Run once then stop (Timer stays in control of deletion)
+    /// LVGL's auto-delete is disabled so the RAII destructor handles cleanup.
+    /// The timer is paused after firing — safe to destroy at any time.
     Timer& once() noexcept {
-        return repeat(1);
+        lv_timer_set_repeat_count(m_timer, 1);
+        lv_timer_set_auto_delete(m_timer, false);
+        return *this;
     }
+
 
     /// Run forever (default)
     Timer& forever() noexcept {
@@ -248,6 +253,12 @@ inline Timer timer_periodic(lv_timer_cb_t cb, uint32_t period_ms, void* user_dat
 template<auto MemFn, typename T>
 Timer timer_periodic(uint32_t period_ms, T* instance) {
     return Timer::create<MemFn>(period_ms, instance);
+}
+
+/// Get a non-owning Timer handle for pause/resume without ownership
+/// Same pattern as lv::ref() for objects.
+inline Timer timer_ref(lv_timer_t* t) noexcept {
+    return Timer(t);
 }
 
 /// Get idle percentage (0-100)
