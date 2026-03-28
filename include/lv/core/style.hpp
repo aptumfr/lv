@@ -849,6 +849,28 @@ public:
         return *static_cast<Derived*>(this);
     }
 
+    // ==================== Outline ====================
+
+    Derived& outline_color(lv_color_t color, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_outline_color(obj(), color, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& outline_width(int32_t width, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_outline_width(obj(), width, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& outline_opa(lv_opa_t opa, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_outline_opa(obj(), opa, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& outline_pad(int32_t pad, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_outline_pad(obj(), pad, sel);
+        return *static_cast<Derived*>(this);
+    }
+
     // ==================== Size Constraints ====================
 
     Derived& min_width(int32_t w, lv_style_selector_t sel = 0) noexcept {
@@ -1065,6 +1087,24 @@ public:
         return lv_obj_get_style_margin_right(obj(), part);
     }
 
+    // --- Outline ---
+
+    [[nodiscard]] lv_color_t get_outline_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_outline_color(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_outline_width(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_outline_width(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_outline_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_outline_opa(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_outline_pad(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_outline_pad(obj(), part);
+    }
+
     // --- Appearance ---
 
     [[nodiscard]] int32_t get_radius(lv_part_t part = LV_PART_MAIN) const noexcept {
@@ -1221,6 +1261,22 @@ public:
 
     [[nodiscard]] uint32_t get_anim_duration(lv_part_t part = LV_PART_MAIN) const noexcept {
         return lv_obj_get_style_anim_duration(obj(), part);
+    }
+    // --- Deprecated aliases (use get_opa, get_translate_x, get_translate_y instead) ---
+
+    [[deprecated("Use get_opa() instead")]]
+    [[nodiscard]] lv_opa_t get_style_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return get_opa(part);
+    }
+
+    [[deprecated("Use get_translate_x() instead")]]
+    [[nodiscard]] int32_t get_style_translate_x(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return get_translate_x(part);
+    }
+
+    [[deprecated("Use get_translate_y() instead")]]
+    [[nodiscard]] int32_t get_style_translate_y(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return get_translate_y(part);
     }
 };
 
