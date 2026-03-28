@@ -739,6 +739,34 @@ public:
         return *static_cast<Derived*>(this);
     }
 
+    // ==================== Shadow ====================
+
+    Derived& shadow_color(lv_color_t color, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_shadow_color(obj(), color, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& shadow_width(int32_t width, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_shadow_width(obj(), width, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& shadow_opa(lv_opa_t opa, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_shadow_opa(obj(), opa, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& shadow_offset(int32_t x, int32_t y, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_shadow_offset_x(obj(), x, sel);
+        lv_obj_set_style_shadow_offset_y(obj(), y, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    Derived& shadow_spread(int32_t spread, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_shadow_spread(obj(), spread, sel);
+        return *static_cast<Derived*>(this);
+    }
+
     // ==================== Line ====================
 
     Derived& line_width(int32_t width, lv_style_selector_t sel = 0) noexcept {

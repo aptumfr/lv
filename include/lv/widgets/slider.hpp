@@ -207,8 +207,11 @@ public:
 
     /// Bind to State<int>
     template<typename T>
-        requires std::is_integral_v<T>
-    Slider& bind(State<T>& state) noexcept;
+        requires (std::is_integral_v<T> && sizeof(T) <= sizeof(int32_t))
+    Slider& bind(State<T>& state) noexcept {
+        lv_slider_bind_value(m_obj, state.subject());
+        return *this;
+    }
 #endif
 };
 

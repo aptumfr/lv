@@ -133,7 +133,10 @@ public:
     /// Bind to State<bool>
     template<typename T>
         requires std::is_same_v<T, bool>
-    Switch& bind(State<T>& state) noexcept;
+    Switch& bind(State<T>& state) noexcept {
+        lv_obj_bind_checked(m_obj, state.subject());
+        return *this;
+    }
 #endif
 };
 

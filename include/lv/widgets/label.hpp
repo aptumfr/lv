@@ -240,7 +240,7 @@ public:
 
     /// Bind to State<int>
     template<typename T>
-        requires std::is_integral_v<T>
+        requires (std::is_integral_v<T> && sizeof(T) <= sizeof(int32_t))
     Label& bind_text(State<T>& state, const char* fmt = "%d") noexcept {
         lv_label_bind_text(m_obj, state.subject(), fmt);
         return *this;
