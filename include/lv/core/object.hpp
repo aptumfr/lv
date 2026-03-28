@@ -569,6 +569,29 @@ public:
     }
 #endif
 
+#if LV_USE_GRID
+    // ==================== Grid Layout ====================
+
+    /// Set grid column and row descriptors (arrays must remain valid for widget lifetime)
+    Derived& grid_dsc(const int32_t* col_dsc, const int32_t* row_dsc) noexcept {
+        lv_obj_set_grid_dsc_array(obj(), col_dsc, row_dsc);
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Place this widget in a grid cell of its parent
+    Derived& grid_cell(lv_grid_align_t col_align, int32_t col, uint8_t col_span,
+                       lv_grid_align_t row_align, int32_t row, uint8_t row_span) noexcept {
+        lv_obj_set_grid_cell(obj(), col_align, col, col_span, row_align, row, row_span);
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Set grid alignment
+    Derived& grid_align(lv_grid_align_t col_align, lv_grid_align_t row_align) noexcept {
+        lv_obj_set_grid_align(obj(), col_align, row_align);
+        return *static_cast<Derived*>(this);
+    }
+#endif
+
     // ==================== Layout ====================
 
     /// Invalidate (request redraw)

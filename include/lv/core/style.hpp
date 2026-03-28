@@ -974,19 +974,253 @@ public:
         return *static_cast<Derived*>(this);
     }
 
-    /// Get translate X
-    [[nodiscard]] int32_t get_style_translate_x(lv_part_t part = LV_PART_MAIN) const noexcept {
+    // ==================== Getters ====================
+    // Convention: get_ + setter name. Parameter is lv_part_t (default LV_PART_MAIN).
+
+    // --- Background ---
+
+    [[nodiscard]] lv_color_t get_bg_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_bg_color(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_bg_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_bg_opa(obj(), part);
+    }
+
+    [[nodiscard]] lv_color_t get_bg_grad_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_bg_grad_color(obj(), part);
+    }
+
+    [[nodiscard]] lv_grad_dir_t get_bg_grad_dir(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_bg_grad_dir(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_bg_grad_stop(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_bg_grad_stop(obj(), part);
+    }
+
+    [[nodiscard]] const void* get_bg_image_src(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_bg_image_src(obj(), part);
+    }
+
+    // --- Border ---
+
+    [[nodiscard]] lv_color_t get_border_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_border_color(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_border_width(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_border_width(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_border_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_border_opa(obj(), part);
+    }
+
+    [[nodiscard]] lv_border_side_t get_border_side(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_border_side(obj(), part);
+    }
+
+    // --- Padding ---
+
+    [[nodiscard]] int32_t get_pad_top(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_pad_top(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_pad_bottom(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_pad_bottom(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_pad_left(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_pad_left(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_pad_right(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_pad_right(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_pad_row(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_pad_row(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_pad_column(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_pad_column(obj(), part);
+    }
+
+    // --- Margin ---
+
+    [[nodiscard]] int32_t get_margin_top(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_margin_top(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_margin_bottom(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_margin_bottom(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_margin_left(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_margin_left(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_margin_right(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_margin_right(obj(), part);
+    }
+
+    // --- Appearance ---
+
+    [[nodiscard]] int32_t get_radius(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_radius(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_opa(obj(), part);
+    }
+
+    [[nodiscard]] lv_blend_mode_t get_blend_mode(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_blend_mode(obj(), part);
+    }
+
+    // --- Text ---
+
+    [[nodiscard]] lv_color_t get_text_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_text_color(obj(), part);
+    }
+
+    [[nodiscard]] const lv_font_t* get_text_font(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_text_font(obj(), part);
+    }
+
+    [[nodiscard]] lv_text_align_t get_text_align(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_text_align(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_text_line_space(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_text_line_space(obj(), part);
+    }
+
+    // --- Image ---
+
+    [[nodiscard]] lv_opa_t get_image_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_image_opa(obj(), part);
+    }
+
+    [[nodiscard]] lv_color_t get_image_recolor(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_image_recolor(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_image_recolor_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_image_recolor_opa(obj(), part);
+    }
+
+    // --- Arc ---
+
+    [[nodiscard]] int32_t get_arc_width(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_arc_width(obj(), part);
+    }
+
+    [[nodiscard]] lv_color_t get_arc_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_arc_color(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_arc_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_arc_opa(obj(), part);
+    }
+
+    [[nodiscard]] bool get_arc_rounded(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_arc_rounded(obj(), part);
+    }
+
+    // --- Shadow ---
+
+    [[nodiscard]] lv_color_t get_shadow_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_shadow_color(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_shadow_width(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_shadow_width(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_shadow_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_shadow_opa(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_shadow_spread(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_shadow_spread(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_shadow_offset_x(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_shadow_offset_x(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_shadow_offset_y(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_shadow_offset_y(obj(), part);
+    }
+
+    // --- Line ---
+
+    [[nodiscard]] int32_t get_line_width(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_line_width(obj(), part);
+    }
+
+    [[nodiscard]] lv_color_t get_line_color(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_line_color(obj(), part);
+    }
+
+    [[nodiscard]] lv_opa_t get_line_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_line_opa(obj(), part);
+    }
+
+    [[nodiscard]] bool get_line_rounded(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_line_rounded(obj(), part);
+    }
+
+    // --- Transform ---
+
+    [[nodiscard]] int32_t get_transform_rotation(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_transform_rotation(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_transform_scale(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_transform_scale(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_transform_scale_x(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_transform_scale_x(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_transform_scale_y(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_transform_scale_y(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_translate_x(lv_part_t part = LV_PART_MAIN) const noexcept {
         return lv_obj_get_style_translate_x(obj(), part);
     }
 
-    /// Get translate Y
-    [[nodiscard]] int32_t get_style_translate_y(lv_part_t part = LV_PART_MAIN) const noexcept {
+    [[nodiscard]] int32_t get_translate_y(lv_part_t part = LV_PART_MAIN) const noexcept {
         return lv_obj_get_style_translate_y(obj(), part);
     }
 
-    /// Get opacity
-    [[nodiscard]] lv_opa_t get_style_opa(lv_part_t part = LV_PART_MAIN) const noexcept {
-        return lv_obj_get_style_opa(obj(), part);
+    // --- Size Constraints ---
+
+    [[nodiscard]] int32_t get_min_width(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_min_width(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_max_width(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_max_width(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_min_height(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_min_height(obj(), part);
+    }
+
+    [[nodiscard]] int32_t get_max_height(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_max_height(obj(), part);
+    }
+
+    // --- Animation ---
+
+    [[nodiscard]] uint32_t get_anim_duration(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_get_style_anim_duration(obj(), part);
     }
 };
 
