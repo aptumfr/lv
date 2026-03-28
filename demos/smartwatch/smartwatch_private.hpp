@@ -94,7 +94,7 @@ inline void animate_opa(lv_obj_t* obj, lv_opa_t opa, int32_t duration, int32_t d
 
 inline void animate_arc(lv_obj_t* obj, ArcAnimation animation, int32_t duration, int32_t delay) {
     auto shrink_to_down = [](void* var, int32_t v) {
-        auto parent = lv::Box(lv::wrap, static_cast<lv_obj_t*>(var));
+        auto parent = lv::ref(static_cast<lv_obj_t*>(var));
         for (uint32_t i = 0; i < parent.child_count(); i++) {
             auto child = lv::Arc(lv::wrap, parent.child(i).get());
             int32_t orig = arc_pos(i);
@@ -109,7 +109,7 @@ inline void animate_arc(lv_obj_t* obj, ArcAnimation animation, int32_t duration,
     };
 
     auto expand_from_down = [](void* var, int32_t v) {
-        auto parent = lv::Box(lv::wrap, static_cast<lv_obj_t*>(var));
+        auto parent = lv::ref(static_cast<lv_obj_t*>(var));
         for (uint32_t i = 0; i < parent.child_count(); i++) {
             auto child = lv::Arc(lv::wrap, parent.child(i).get());
             int32_t orig = 75;
@@ -124,7 +124,7 @@ inline void animate_arc(lv_obj_t* obj, ArcAnimation animation, int32_t duration,
     };
 
     auto shrink_to_left = [](void* var, int32_t v) {
-        auto parent = lv::Box(lv::wrap, static_cast<lv_obj_t*>(var));
+        auto parent = lv::ref(static_cast<lv_obj_t*>(var));
         for (uint32_t i = 0; i < parent.child_count(); i++) {
             auto child = lv::Arc(lv::wrap, parent.child(i).get());
             int32_t orig = arc_pos(i);
@@ -139,7 +139,7 @@ inline void animate_arc(lv_obj_t* obj, ArcAnimation animation, int32_t duration,
     };
 
     auto expand_from_left = [](void* var, int32_t v) {
-        auto parent = lv::Box(lv::wrap, static_cast<lv_obj_t*>(var));
+        auto parent = lv::ref(static_cast<lv_obj_t*>(var));
         for (uint32_t i = 0; i < parent.child_count(); i++) {
             auto child = lv::Arc(lv::wrap, parent.child(i).get());
             int32_t orig = 165;

@@ -12,6 +12,7 @@ struct wrap_t {};
 
 /// Tag instance
 /// Usage: auto box = lv::Box(lv::wrap, existing_ptr);
+/// Prefer lv::ref(ptr) for generic object access.
 inline constexpr wrap_t wrap{};
 
 } // namespace lv

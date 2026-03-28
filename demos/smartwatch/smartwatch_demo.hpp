@@ -122,7 +122,7 @@ inline void SmartwatchDemo::create() {
         m_inited = true;
     }
 
-    auto screen = lv::Box(lv::wrap, lv::screen_active().get());
+    auto screen = lv::screen_active();
     screen.remove_flag(lv::kFlag::scrollable)
         .bg_color(lv::rgb(0x000000));
 

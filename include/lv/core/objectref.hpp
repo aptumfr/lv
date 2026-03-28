@@ -42,6 +42,21 @@ public:
 static_assert(sizeof(ObjectRef) == sizeof(void*),
     "ObjectRef must be exactly pointer-sized for zero overhead");
 
+/// Get the full C++ interface for a raw LVGL object pointer
+inline ObjectRef ref(lv_obj_t* obj) noexcept {
+    return ObjectRef(obj);
+}
+
+// ==================== Deferred definitions from object.hpp ====================
+
+inline ObjectRef ObjectView::parent() const noexcept {
+    return ObjectRef(lv_obj_get_parent(m_obj));
+}
+
+inline ObjectRef ObjectView::child(int32_t idx) const noexcept {
+    return ObjectRef(lv_obj_get_child(m_obj, idx));
+}
+
 // ==================== Deferred definitions from event.hpp ====================
 // These break the circular dependency: event.hpp forward-declares ObjectRef,
 // objectref.hpp provides the bodies after ObjectRef is complete.

@@ -268,12 +268,12 @@ inline void MusicScreen::rotate_objects(int32_t angle) {
         int32_t x = (lv_trigo_cos(m_objects[i].position) * m_radius) / LV_TRIGO_SIN_MAX;
         int32_t y = (lv_trigo_sin(m_objects[i].position) * m_radius) / LV_TRIGO_SIN_MAX;
 
-        auto obj = lv::Box(lv::wrap, m_objects[i].obj);
+        auto obj = lv::ref(m_objects[i].obj);
         if (y > m_radius / 2) {
             obj.move_foreground();
             lv::Label(lv::wrap, m_label_artist).text(music_list[i].artist);
             lv::Label(lv::wrap, m_label_track).text(music_list[i].track);
-            lv::Box(lv::wrap, m_screen).bg_color(lv::rgb(music_list[i].color));
+            lv::ref(m_screen).bg_color(lv::rgb(music_list[i].color));
         } else if (y < -m_radius / 2) {
             obj.move_background();
         }

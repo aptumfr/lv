@@ -379,21 +379,21 @@ private:
         }
 
         // Mark first bullet as checked
-        lv::Box(lv::wrap, cont.child(0).get()).add_state(lv::kState::checked);
+        cont.child(0).add_state(lv::kState::checked);
 
         // Add scroll handler using on_scroll_end with user_data
         lv_obj_add_event_cb(parent.get(), [](lv_event_t* e) {
             lv::Event event(e);
-            lv::Box main_cont(lv::wrap, event.target().get());
-            lv::Box bullet_cont(lv::wrap, static_cast<lv_obj_t*>(event.user_data()));
+            auto main_cont = event.target();
+            auto bullet_cont = lv::ref(static_cast<lv_obj_t*>(event.user_data()));
 
             int32_t idx = main_cont.scroll_x() / main_cont.content_width();
 
             uint32_t child_cnt = bullet_cont.child_count();
             for (uint32_t i = 0; i < child_cnt; i++) {
-                lv::Box(lv::wrap, bullet_cont.child(i).get()).remove_state(lv::kState::checked);
+                bullet_cont.child(i).remove_state(lv::kState::checked);
             }
-            lv::Box(lv::wrap, bullet_cont.child(idx).get()).add_state(lv::kState::checked);
+            bullet_cont.child(idx).add_state(lv::kState::checked);
         }, lv::kEvent::scroll_end, cont.get());
     }
 };

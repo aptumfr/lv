@@ -19,6 +19,7 @@ namespace lv {
 
 // Forward declarations
 class Style;
+class ObjectRef;
 
 // ==================== Feature Detection ====================
 
@@ -133,9 +134,7 @@ public:
     // ==================== Parent/Child ====================
 
     /// Get parent object
-    [[nodiscard]] ObjectView parent() const noexcept {
-        return ObjectView(lv_obj_get_parent(m_obj));
-    }
+    [[nodiscard]] inline ObjectRef parent() const noexcept;
 
     /// Get child count
     [[nodiscard]] uint32_t child_count() const noexcept {
@@ -143,9 +142,7 @@ public:
     }
 
     /// Get child by index
-    [[nodiscard]] ObjectView child(int32_t idx) const noexcept {
-        return ObjectView(lv_obj_get_child(m_obj, idx));
-    }
+    [[nodiscard]] inline ObjectRef child(int32_t idx) const noexcept;
 
     // ==================== Deletion ====================
 
@@ -759,3 +756,7 @@ public:
 };
 
 } // namespace lv
+
+// Deferred include: provides ObjectRef definition and ObjectView::parent()/child()
+// bodies. Pragma-once guards prevent circular inclusion.
+#include "objectref.hpp"

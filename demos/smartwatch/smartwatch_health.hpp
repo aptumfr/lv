@@ -195,9 +195,9 @@ inline void HealthScreen::create(DemoController& controller) {
 
 inline void HealthScreen::on_button_click(lv::Event /*e*/) {
 #if LV_USE_LOTTIE == 1
-    auto lottie_ecg = lv::Box(lv::wrap, m_lottie_ecg);
-    auto heart_bg_2 = lv::Box(lv::wrap, m_heart_bg_2);
-    auto heart_icon = lv::Box(lv::wrap, m_heart_icon);
+    auto lottie_ecg = lv::ref(m_lottie_ecg);
+    auto heart_bg_2 = lv::ref(m_heart_bg_2);
+    auto heart_icon = lv::ref(m_heart_icon);
 
     if (lottie_ecg.has_flag(lv::kFlag::hidden)) {
         lottie_ecg.remove_flag(lv::kFlag::hidden);

@@ -121,14 +121,14 @@ inline void ControlScreen::create(DemoController& controller) {
         }
     }
 
-    lv::Box(lv::wrap, m_screen).update_snap(lv::kAnim::on).scroll_by(0, -1, lv::kAnim::on);
+    lv::ref(m_screen).update_snap(lv::kAnim::on).scroll_by(0, -1, lv::kAnim::on);
 }
 
 // on_gesture and on_long_press implementations deferred to smartwatch_gestures.hpp
 // to avoid incomplete type issues with DemoController
 
 inline void ControlScreen::on_scroll(lv::Event e) {
-    auto cont = lv::Box(lv::wrap, e.target().get());
+    auto cont = e.target();
 
     lv_area_t cont_a;
     cont.get_coords(&cont_a);
@@ -138,7 +138,7 @@ inline void ControlScreen::on_scroll(lv::Event e) {
     uint32_t child_cnt = cont.child_count();
 
     for (uint32_t i = 0; i < child_cnt; i++) {
-        auto child = lv::Box(lv::wrap, cont.child(i).get());
+        auto child = cont.child(i);
         lv_area_t child_a;
         child.get_coords(&child_a);
 
@@ -161,7 +161,7 @@ inline void ControlScreen::on_scroll(lv::Event e) {
         child.width(cont_width);
 
         for (uint32_t c = 0; c < child.child_count(); c++) {
-            auto grand = lv::Box(lv::wrap, child.child(c).get());
+            auto grand = child.child(c);
             grand.size(icon_size, icon_size);
             lv::Image(lv::wrap, grand.child(0).get()).scale(img_scale);
         }

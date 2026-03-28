@@ -157,7 +157,7 @@ private:
         constexpr lv_style_selector_t selected_checked = lv::kPart::selected | static_cast<lv_style_selector_t>(lv::kState::checked);
         constexpr lv_style_selector_t selected_pressed = lv::kPart::selected | static_cast<lv_style_selector_t>(lv::kState::pressed);
 
-        lv::Box list(lv::wrap, dd.list().get());
+        auto list = dd.list();
         list.bg_color(lv::colors::black())
             .bg_opa(lv::opa::cover)
             .bg_color(turquoise(), selected_checked)

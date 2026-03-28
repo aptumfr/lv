@@ -261,13 +261,15 @@
  * ## Key Components
  *
  * ### Object Wrappers
- * - `ObjectView` - Non-owning view of lv_obj_t with read-only getters (zero overhead)
+ * - `ObjectView` - Non-owning base wrapper with getters and tree navigation (zero overhead)
  * - `ObjectRef` - Non-owning reference with full fluent API (ObjectMixin + EventMixin + StyleMixin)
  * - `Object` - Owning wrapper with RAII (move-only)
+ * - `lv::ref(ptr)` - Free function to get an ObjectRef from a raw lv_obj_t*
  *
- * Methods that hand out sub-objects (e.g. root(), add_button(), tab_bar())
- * return `ObjectRef` so callers can chain fluent calls immediately.
- * `ObjectView` is used for parameter types and lightweight read-only access.
+ * ObjectView is the base class for all widgets and serves as the parameter type.
+ * Its parent()/child() methods return ObjectRef for seamless tree navigation.
+ * ObjectRef adds the fluent setters (size, style, events) and is returned by
+ * methods that hand out sub-objects (root(), add_button(), tab_bar(), etc.).
  *
  * ### Widgets
  * - `Label` - Text display

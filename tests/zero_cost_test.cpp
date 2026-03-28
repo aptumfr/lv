@@ -111,6 +111,7 @@ lv_color_t test_cpp_color() {
 // ============================================================
 
 static_assert(sizeof(lv::ObjectView) == sizeof(lv_obj_t*), "ObjectView must be pointer-sized");
+static_assert(sizeof(lv::ObjectRef) == sizeof(lv_obj_t*), "ObjectRef must be pointer-sized");
 static_assert(sizeof(lv::Label) == sizeof(lv_obj_t*), "Label must be pointer-sized");
 static_assert(sizeof(lv::Button) == sizeof(lv_obj_t*), "Button must be pointer-sized");
 static_assert(sizeof(lv::Slider) == sizeof(lv_obj_t*), "Slider must be pointer-sized");

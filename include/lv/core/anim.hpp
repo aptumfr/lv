@@ -91,7 +91,7 @@ public:
     }
 
     // ==================== Typed Exec Helpers ====================
-    // These avoid repeated lv::Box(lv::wrap, ...) rewrapping in callbacks
+    // These avoid repeated lv::ref(...) rewrapping in callbacks
 
     /// Animate translate_x style property
     Anim& exec_translate_x(ObjectView obj) noexcept {

@@ -13,8 +13,8 @@
  *     .size(100, 50)
  *     .bg_color(lv::rgb(0x2196F3));  // blue
  *
- * // Wrap an existing lv_obj_t*
- * auto wrapped = lv::Box(lv::wrap, raw_ptr);
+ * // Get the fluent API on an existing lv_obj_t*
+ * auto wrapped = lv::ref(raw_ptr);
  * @endcode
  */
 
