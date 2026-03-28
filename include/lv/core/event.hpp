@@ -17,7 +17,7 @@
  *
  * // 2. Stateless lambda with lv::Event (C++ style)
  * btn.on(lv::kEvent::clicked, [](lv::Event e) {
- *     auto target = e.target();  // Returns ObjectView
+ *     auto target = e.target();  // Returns ObjectRef
  * });
  *
  * // 3. Function pointer with lv_event_t*
@@ -54,6 +54,9 @@
 
 
 namespace lv {
+
+// Forward declaration — full definition in objectref.hpp
+class ObjectRef;
 
 // ==================== Event Types ====================
 
@@ -100,14 +103,10 @@ public:
     [[nodiscard]] constexpr operator lv_event_t*() const noexcept { return m_event; }
 
     /// Get the target object (original object that received the event)
-    [[nodiscard]] ObjectView target() const noexcept {
-        return ObjectView(lv_event_get_target_obj(m_event));
-    }
+    [[nodiscard]] inline ObjectRef target() const noexcept;
 
     /// Get the current target (may differ during bubbling)
-    [[nodiscard]] ObjectView current_target() const noexcept {
-        return ObjectView(lv_event_get_current_target_obj(m_event));
-    }
+    [[nodiscard]] inline ObjectRef current_target() const noexcept;
 
     /// Get the event code
     [[nodiscard]] lv_event_code_t code() const noexcept {
@@ -756,15 +755,11 @@ public:
 
 /// Get the target object from an event
 [[deprecated("Use Event::target() instead")]]
-inline ObjectView event_target(lv_event_t* e) noexcept {
-    return ObjectView(lv_event_get_target_obj(e));
-}
+inline ObjectRef event_target(lv_event_t* e) noexcept;
 
 /// Get the current target object from an event (during bubbling)
 [[deprecated("Use Event::current_target() instead")]]
-inline ObjectView event_current_target(lv_event_t* e) noexcept {
-    return ObjectView(lv_event_get_current_target_obj(e));
-}
+inline ObjectRef event_current_target(lv_event_t* e) noexcept;
 
 /// Get the event code
 [[deprecated("Use Event::code() instead")]]
@@ -792,3 +787,7 @@ inline void event_stop_processing(lv_event_t* e) noexcept {
 }
 
 } // namespace lv
+
+// Deferred include: provides ObjectRef definition and Event::target()/current_target()
+// bodies. Pragma-once guards prevent circular inclusion.
+#include "objectref.hpp"

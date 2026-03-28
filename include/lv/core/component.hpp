@@ -9,7 +9,7 @@
  */
 
 #include <lvgl.h>
-#include "object.hpp"
+#include "objectref.hpp"
 
 namespace lv {
 
@@ -17,7 +17,7 @@ namespace lv {
  * @brief CRTP base class for UI components
  *
  * Components encapsulate UI logic and state. The derived class implements
- * build() which returns the root ObjectView of the component's UI tree.
+ * build() which returns the root object (any ObjectView-convertible type).
  *
  * Features:
  * - Zero virtual call overhead (CRTP static dispatch)
@@ -237,10 +237,10 @@ public:
     }
 
     /**
-     * @brief Get the root object as ObjectView
+     * @brief Get the root object as ObjectRef
      */
-    [[nodiscard]] ObjectView root() const noexcept {
-        return ObjectView(m_root);
+    [[nodiscard]] ObjectRef root() const noexcept {
+        return ObjectRef(m_root);
     }
 
     // ==================== Static Helpers ====================
@@ -335,13 +335,13 @@ public:
      * Creates a new screen object and mounts the component to it.
      * Any previously mounted screen is unmounted first.
      */
-    ObjectView mount_screen() {
+    ObjectRef mount_screen() {
         unmount_screen();
         m_screen = lv_obj_create(nullptr);
         lv_obj_add_event_cb(m_screen, &ScreenComponent::screen_delete_cb,
                            LV_EVENT_DELETE, static_cast<Derived*>(this));
         this->mount(ObjectView(m_screen));
-        return ObjectView(m_screen);
+        return ObjectRef(m_screen);
     }
 
     /**
@@ -373,8 +373,8 @@ public:
     }
 
     /// Get the screen object
-    [[nodiscard]] ObjectView screen() const noexcept {
-        return ObjectView(m_screen);
+    [[nodiscard]] ObjectRef screen() const noexcept {
+        return ObjectRef(m_screen);
     }
 };
 

@@ -49,6 +49,7 @@
 #include "core/object.hpp"
 #include "core/event.hpp"
 #include "core/style.hpp"
+#include "core/objectref.hpp"
 #include "core/color.hpp"
 #include "core/font.hpp"
 #include "core/display.hpp"
@@ -260,8 +261,13 @@
  * ## Key Components
  *
  * ### Object Wrappers
- * - `ObjectView` - Non-owning view of lv_obj_t (zero overhead)
+ * - `ObjectView` - Non-owning view of lv_obj_t with read-only getters (zero overhead)
+ * - `ObjectRef` - Non-owning reference with full fluent API (ObjectMixin + EventMixin + StyleMixin)
  * - `Object` - Owning wrapper with RAII (move-only)
+ *
+ * Methods that hand out sub-objects (e.g. root(), add_button(), tab_bar())
+ * return `ObjectRef` so callers can chain fluent calls immediately.
+ * `ObjectView` is used for parameter types and lightweight read-only access.
  *
  * ### Widgets
  * - `Label` - Text display
@@ -319,13 +325,13 @@ constexpr const char* version() noexcept {
 // Screen helpers are provided by core/screen.hpp
 
 /// Get the layer_top (always on top)
-inline ObjectView layer_top() noexcept {
-    return ObjectView(lv_layer_top());
+inline ObjectRef layer_top() noexcept {
+    return ObjectRef(lv_layer_top());
 }
 
 /// Get the layer_sys (system layer)
-inline ObjectView layer_sys() noexcept {
-    return ObjectView(lv_layer_sys());
+inline ObjectRef layer_sys() noexcept {
+    return ObjectRef(lv_layer_sys());
 }
 
 // ==================== Display Helpers ====================

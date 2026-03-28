@@ -6,7 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "object.hpp"
+#include "objectref.hpp"
 #include "version.hpp"
 
 namespace lv {
@@ -80,8 +80,8 @@ public:
     }
 
     /// Get focused object
-    [[nodiscard]] ObjectView focused() const noexcept {
-        return ObjectView(lv_group_get_focused(m_group));
+    [[nodiscard]] ObjectRef focused() const noexcept {
+        return ObjectRef(lv_group_get_focused(m_group));
     }
 
     /// Get object count

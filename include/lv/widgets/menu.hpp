@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -39,8 +37,8 @@ public:
     // ==================== Pages ====================
 
     /// Create a new page
-    [[nodiscard]] ObjectView page_create(const char* title) noexcept {
-        return ObjectView(lv_menu_page_create(m_obj, const_cast<char*>(title)));
+    [[nodiscard]] ObjectRef page_create(const char* title) noexcept {
+        return ObjectRef(lv_menu_page_create(m_obj, const_cast<char*>(title)));
     }
 
     /// Set current page
@@ -50,20 +48,20 @@ public:
     }
 
     /// Get current page
-    [[nodiscard]] ObjectView page() const noexcept {
-        return ObjectView(lv_menu_get_cur_main_page(m_obj));
+    [[nodiscard]] ObjectRef page() const noexcept {
+        return ObjectRef(lv_menu_get_cur_main_page(m_obj));
     }
 
     // ==================== Sections ====================
 
     /// Create a section container
-    [[nodiscard]] ObjectView section_create(lv_obj_t* page_obj) noexcept {
-        return ObjectView(lv_menu_section_create(page_obj));
+    [[nodiscard]] ObjectRef section_create(lv_obj_t* page_obj) noexcept {
+        return ObjectRef(lv_menu_section_create(page_obj));
     }
 
     /// Create a menu item container
-    [[nodiscard]] ObjectView cont_create(lv_obj_t* parent_obj) noexcept {
-        return ObjectView(lv_menu_cont_create(parent_obj));
+    [[nodiscard]] ObjectRef cont_create(lv_obj_t* parent_obj) noexcept {
+        return ObjectRef(lv_menu_cont_create(parent_obj));
     }
 
     // ==================== Sidebar ====================
@@ -75,8 +73,8 @@ public:
     }
 
     /// Get sidebar page
-    [[nodiscard]] ObjectView sidebar_page() const noexcept {
-        return ObjectView(lv_menu_get_cur_sidebar_page(m_obj));
+    [[nodiscard]] ObjectRef sidebar_page() const noexcept {
+        return ObjectRef(lv_menu_get_cur_sidebar_page(m_obj));
     }
 
     /// Set sidebar header mode
@@ -94,23 +92,23 @@ public:
     }
 
     /// Get main header
-    [[nodiscard]] ObjectView main_header() const noexcept {
-        return ObjectView(lv_menu_get_main_header(m_obj));
+    [[nodiscard]] ObjectRef main_header() const noexcept {
+        return ObjectRef(lv_menu_get_main_header(m_obj));
     }
 
     /// Get main header back button
-    [[nodiscard]] ObjectView main_header_back_button() const noexcept {
-        return ObjectView(lv_menu_get_main_header_back_button(m_obj));
+    [[nodiscard]] ObjectRef main_header_back_button() const noexcept {
+        return ObjectRef(lv_menu_get_main_header_back_button(m_obj));
     }
 
     /// Get sidebar header
-    [[nodiscard]] ObjectView sidebar_header() const noexcept {
-        return ObjectView(lv_menu_get_sidebar_header(m_obj));
+    [[nodiscard]] ObjectRef sidebar_header() const noexcept {
+        return ObjectRef(lv_menu_get_sidebar_header(m_obj));
     }
 
     /// Get sidebar header back button
-    [[nodiscard]] ObjectView sidebar_header_back_button() const noexcept {
-        return ObjectView(lv_menu_get_sidebar_header_back_button(m_obj));
+    [[nodiscard]] ObjectRef sidebar_header_back_button() const noexcept {
+        return ObjectRef(lv_menu_get_sidebar_header_back_button(m_obj));
     }
 
     // ==================== Navigation ====================

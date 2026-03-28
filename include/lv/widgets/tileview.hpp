@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -39,13 +37,13 @@ public:
     // ==================== Tiles ====================
 
     /// Add a tile at position (returns the tile content object)
-    [[nodiscard]] ObjectView add_tile(uint8_t col, uint8_t row, lv_dir_t dir) noexcept {
-        return ObjectView(lv_tileview_add_tile(m_obj, col, row, dir));
+    [[nodiscard]] ObjectRef add_tile(uint8_t col, uint8_t row, lv_dir_t dir) noexcept {
+        return ObjectRef(lv_tileview_add_tile(m_obj, col, row, dir));
     }
 
     /// Get active tile
-    [[nodiscard]] ObjectView active_tile() const noexcept {
-        return ObjectView(lv_tileview_get_tile_active(m_obj));
+    [[nodiscard]] ObjectRef active_tile() const noexcept {
+        return ObjectRef(lv_tileview_get_tile_active(m_obj));
     }
 
     /// Set active tile by object

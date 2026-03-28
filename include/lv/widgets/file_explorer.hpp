@@ -11,9 +11,7 @@
 
 #if LV_USE_FILE_EXPLORER
 
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -154,36 +152,36 @@ public:
     }
 
     /// Get quick access area
-    [[nodiscard]] ObjectView quick_access_area() const noexcept {
-        return ObjectView(lv_file_explorer_get_quick_access_area(m_obj));
+    [[nodiscard]] ObjectRef quick_access_area() const noexcept {
+        return ObjectRef(lv_file_explorer_get_quick_access_area(m_obj));
     }
 
     /// Get places list
-    [[nodiscard]] ObjectView places_list() const noexcept {
-        return ObjectView(lv_file_explorer_get_places_list(m_obj));
+    [[nodiscard]] ObjectRef places_list() const noexcept {
+        return ObjectRef(lv_file_explorer_get_places_list(m_obj));
     }
 
     /// Get device list
-    [[nodiscard]] ObjectView device_list() const noexcept {
-        return ObjectView(lv_file_explorer_get_device_list(m_obj));
+    [[nodiscard]] ObjectRef device_list() const noexcept {
+        return ObjectRef(lv_file_explorer_get_device_list(m_obj));
     }
 #endif
 
     // ==================== Sub-objects ====================
 
     /// Get file table (lv_table)
-    [[nodiscard]] ObjectView file_table() const noexcept {
-        return ObjectView(lv_file_explorer_get_file_table(m_obj));
+    [[nodiscard]] ObjectRef file_table() const noexcept {
+        return ObjectRef(lv_file_explorer_get_file_table(m_obj));
     }
 
     /// Get header area
-    [[nodiscard]] ObjectView header() const noexcept {
-        return ObjectView(lv_file_explorer_get_header(m_obj));
+    [[nodiscard]] ObjectRef header() const noexcept {
+        return ObjectRef(lv_file_explorer_get_header(m_obj));
     }
 
     /// Get path label
-    [[nodiscard]] ObjectView path_label() const noexcept {
-        return ObjectView(lv_file_explorer_get_path_label(m_obj));
+    [[nodiscard]] ObjectRef path_label() const noexcept {
+        return ObjectRef(lv_file_explorer_get_path_label(m_obj));
     }
 
     // ==================== Size ====================

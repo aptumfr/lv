@@ -8,7 +8,7 @@
  */
 
 #include <lvgl.h>
-#include "object.hpp"
+#include "objectref.hpp"
 #include "version.hpp"
 
 namespace lv {
@@ -196,8 +196,8 @@ public:
     }
 
     /// Get scroll object
-    [[nodiscard]] ObjectView scroll_obj() const noexcept {
-        return ObjectView(lv_indev_get_scroll_obj(m_indev));
+    [[nodiscard]] ObjectRef scroll_obj() const noexcept {
+        return ObjectRef(lv_indev_get_scroll_obj(m_indev));
     }
 
     /// Get gesture direction

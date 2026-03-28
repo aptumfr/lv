@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -39,8 +37,8 @@ public:
     // ==================== Tabs ====================
 
     /// Add a tab (returns the tab content object)
-    [[nodiscard]] ObjectView add_tab(const char* name) noexcept {
-        return ObjectView(lv_tabview_add_tab(m_obj, name));
+    [[nodiscard]] ObjectRef add_tab(const char* name) noexcept {
+        return ObjectRef(lv_tabview_add_tab(m_obj, name));
     }
 
     /// Rename a tab
@@ -76,8 +74,8 @@ public:
     // ==================== Tab Bar ====================
 
     /// Get tab bar object (for styling)
-    [[nodiscard]] ObjectView tab_bar() const noexcept {
-        return ObjectView(lv_tabview_get_tab_bar(m_obj));
+    [[nodiscard]] ObjectRef tab_bar() const noexcept {
+        return ObjectRef(lv_tabview_get_tab_bar(m_obj));
     }
 
     /// Set tab bar position
@@ -115,8 +113,8 @@ public:
     // ==================== Content ====================
 
     /// Get content container
-    [[nodiscard]] ObjectView content() const noexcept {
-        return ObjectView(lv_tabview_get_content(m_obj));
+    [[nodiscard]] ObjectRef content() const noexcept {
+        return ObjectRef(lv_tabview_get_content(m_obj));
     }
 
     // ==================== Size ====================

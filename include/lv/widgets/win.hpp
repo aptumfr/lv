@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -39,25 +37,25 @@ public:
     // ==================== Header ====================
 
     /// Add title to header
-    [[nodiscard]] ObjectView add_title(const char* txt) noexcept {
-        return ObjectView(lv_win_add_title(m_obj, txt));
+    [[nodiscard]] ObjectRef add_title(const char* txt) noexcept {
+        return ObjectRef(lv_win_add_title(m_obj, txt));
     }
 
     /// Add button to header (returns button object)
-    [[nodiscard]] ObjectView add_button(const void* icon, int32_t btn_w) noexcept {
-        return ObjectView(lv_win_add_button(m_obj, icon, btn_w));
+    [[nodiscard]] ObjectRef add_button(const void* icon, int32_t btn_w) noexcept {
+        return ObjectRef(lv_win_add_button(m_obj, icon, btn_w));
     }
 
     /// Get header object
-    [[nodiscard]] ObjectView header() const noexcept {
-        return ObjectView(lv_win_get_header(m_obj));
+    [[nodiscard]] ObjectRef header() const noexcept {
+        return ObjectRef(lv_win_get_header(m_obj));
     }
 
     // ==================== Content ====================
 
     /// Get content object (where to add child widgets)
-    [[nodiscard]] ObjectView content() const noexcept {
-        return ObjectView(lv_win_get_content(m_obj));
+    [[nodiscard]] ObjectRef content() const noexcept {
+        return ObjectRef(lv_win_get_content(m_obj));
     }
 
     // ==================== Size ====================

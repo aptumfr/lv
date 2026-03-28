@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -40,50 +38,50 @@ public:
     // ==================== Content ====================
 
     /// Add title
-    [[nodiscard]] ObjectView add_title(const char* txt) noexcept {
-        return ObjectView(lv_msgbox_add_title(m_obj, txt));
+    [[nodiscard]] ObjectRef add_title(const char* txt) noexcept {
+        return ObjectRef(lv_msgbox_add_title(m_obj, txt));
     }
 
     /// Add text content
-    [[nodiscard]] ObjectView add_text(const char* txt) noexcept {
-        return ObjectView(lv_msgbox_add_text(m_obj, txt));
+    [[nodiscard]] ObjectRef add_text(const char* txt) noexcept {
+        return ObjectRef(lv_msgbox_add_text(m_obj, txt));
     }
 
     /// Add header button (e.g., close button)
-    [[nodiscard]] ObjectView add_header_button(const void* icon) noexcept {
-        return ObjectView(lv_msgbox_add_header_button(m_obj, icon));
+    [[nodiscard]] ObjectRef add_header_button(const void* icon) noexcept {
+        return ObjectRef(lv_msgbox_add_header_button(m_obj, icon));
     }
 
     /// Add footer button
-    [[nodiscard]] ObjectView add_footer_button(const char* txt) noexcept {
-        return ObjectView(lv_msgbox_add_footer_button(m_obj, txt));
+    [[nodiscard]] ObjectRef add_footer_button(const char* txt) noexcept {
+        return ObjectRef(lv_msgbox_add_footer_button(m_obj, txt));
     }
 
     /// Add close button to header
-    [[nodiscard]] ObjectView add_close_button() noexcept {
-        return ObjectView(lv_msgbox_add_close_button(m_obj));
+    [[nodiscard]] ObjectRef add_close_button() noexcept {
+        return ObjectRef(lv_msgbox_add_close_button(m_obj));
     }
 
     // ==================== Parts ====================
 
     /// Get header object
-    [[nodiscard]] ObjectView header() const noexcept {
-        return ObjectView(lv_msgbox_get_header(m_obj));
+    [[nodiscard]] ObjectRef header() const noexcept {
+        return ObjectRef(lv_msgbox_get_header(m_obj));
     }
 
     /// Get footer object
-    [[nodiscard]] ObjectView footer() const noexcept {
-        return ObjectView(lv_msgbox_get_footer(m_obj));
+    [[nodiscard]] ObjectRef footer() const noexcept {
+        return ObjectRef(lv_msgbox_get_footer(m_obj));
     }
 
     /// Get content object
-    [[nodiscard]] ObjectView content() const noexcept {
-        return ObjectView(lv_msgbox_get_content(m_obj));
+    [[nodiscard]] ObjectRef content() const noexcept {
+        return ObjectRef(lv_msgbox_get_content(m_obj));
     }
 
     /// Get title label
-    [[nodiscard]] ObjectView title() const noexcept {
-        return ObjectView(lv_msgbox_get_title(m_obj));
+    [[nodiscard]] ObjectRef title() const noexcept {
+        return ObjectRef(lv_msgbox_get_title(m_obj));
     }
 
     // ==================== Actions ====================

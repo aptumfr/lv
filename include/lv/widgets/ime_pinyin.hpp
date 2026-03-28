@@ -11,9 +11,7 @@
 
 #if LV_USE_IME_PINYIN
 
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -89,13 +87,13 @@ public:
     // ==================== Getters ====================
 
     /// Get the associated keyboard
-    [[nodiscard]] ObjectView get_keyboard() const noexcept {
-        return ObjectView(lv_ime_pinyin_get_kb(m_obj));
+    [[nodiscard]] ObjectRef get_keyboard() const noexcept {
+        return ObjectRef(lv_ime_pinyin_get_kb(m_obj));
     }
 
     /// Get the candidate panel widget
-    [[nodiscard]] ObjectView get_candidate_panel() const noexcept {
-        return ObjectView(lv_ime_pinyin_get_cand_panel(m_obj));
+    [[nodiscard]] ObjectRef get_candidate_panel() const noexcept {
+        return ObjectRef(lv_ime_pinyin_get_cand_panel(m_obj));
     }
 
     /// Get the dictionary

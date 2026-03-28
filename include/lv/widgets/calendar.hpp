@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -94,13 +92,13 @@ public:
     // ==================== Header ====================
 
     /// Add header with month/year and navigation arrows
-    [[nodiscard]] ObjectView header_arrow() noexcept {
-        return ObjectView(lv_calendar_header_arrow_create(m_obj));
+    [[nodiscard]] ObjectRef header_arrow() noexcept {
+        return ObjectRef(lv_calendar_header_arrow_create(m_obj));
     }
 
     /// Add dropdown header for month/year selection
-    [[nodiscard]] ObjectView header_dropdown() noexcept {
-        return ObjectView(lv_calendar_header_dropdown_create(m_obj));
+    [[nodiscard]] ObjectRef header_dropdown() noexcept {
+        return ObjectRef(lv_calendar_header_dropdown_create(m_obj));
     }
 
     // ==================== Size ====================

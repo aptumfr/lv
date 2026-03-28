@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -190,8 +188,8 @@ public:
     // ==================== List Access ====================
 
     /// Get the dropdown list object (for styling)
-    [[nodiscard]] ObjectView list() const noexcept {
-        return ObjectView(lv_dropdown_get_list(m_obj));
+    [[nodiscard]] ObjectRef list() const noexcept {
+        return ObjectRef(lv_dropdown_get_list(m_obj));
     }
 };
 

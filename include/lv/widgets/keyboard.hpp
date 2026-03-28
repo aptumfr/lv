@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -43,8 +41,8 @@ public:
     }
 
     /// Get target textarea
-    [[nodiscard]] ObjectView get_textarea() const noexcept {
-        return ObjectView(lv_keyboard_get_textarea(m_obj));
+    [[nodiscard]] ObjectRef get_textarea() const noexcept {
+        return ObjectRef(lv_keyboard_get_textarea(m_obj));
     }
 
     // ==================== Mode ====================

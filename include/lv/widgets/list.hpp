@@ -6,9 +6,7 @@
  */
 
 #include <lvgl.h>
-#include "../core/object.hpp"
-#include "../core/event.hpp"
-#include "../core/style.hpp"
+#include "../core/objectref.hpp"
 
 namespace lv {
 
@@ -39,18 +37,18 @@ public:
     // ==================== Items ====================
 
     /// Add text item (returns the button object)
-    [[nodiscard]] ObjectView add_text(const char* txt) noexcept {
-        return ObjectView(lv_list_add_text(m_obj, txt));
+    [[nodiscard]] ObjectRef add_text(const char* txt) noexcept {
+        return ObjectRef(lv_list_add_text(m_obj, txt));
     }
 
     /// Add button item with icon and text
-    [[nodiscard]] ObjectView add_button(const void* icon, const char* txt) noexcept {
-        return ObjectView(lv_list_add_button(m_obj, icon, txt));
+    [[nodiscard]] ObjectRef add_button(const void* icon, const char* txt) noexcept {
+        return ObjectRef(lv_list_add_button(m_obj, icon, txt));
     }
 
     /// Add button item with text only
-    [[nodiscard]] ObjectView add_button(const char* txt) noexcept {
-        return ObjectView(lv_list_add_button(m_obj, nullptr, txt));
+    [[nodiscard]] ObjectRef add_button(const char* txt) noexcept {
+        return ObjectRef(lv_list_add_button(m_obj, nullptr, txt));
     }
 
     /// Get button text

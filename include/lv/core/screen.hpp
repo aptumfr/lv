@@ -8,9 +8,7 @@
  */
 
 #include <lvgl.h>
-#include "object.hpp"
-#include "event.hpp"
-#include "style.hpp"
+#include "objectref.hpp"
 #include "anim.hpp"
 
 namespace lv {
@@ -35,8 +33,8 @@ inline void screen_load_anim(ObjectView scr, lv_screen_load_anim_t anim, uint32_
 }
 
 /// Create a new screen
-inline ObjectView screen_create() noexcept {
-    return ObjectView(lv_obj_create(nullptr));
+inline ObjectRef screen_create() noexcept {
+    return ObjectRef(lv_obj_create(nullptr));
 }
 
 // ==================== Screen Load Animations ====================
@@ -185,8 +183,8 @@ public:
     }
 
     /// Get current screen
-    [[nodiscard]] ObjectView current() const noexcept {
-        return m_depth > 0 ? m_stack[m_depth - 1] : ObjectView(nullptr);
+    [[nodiscard]] ObjectRef current() const noexcept {
+        return m_depth > 0 ? m_stack[m_depth - 1] : ObjectRef(nullptr);
     }
 
     /// Get stack depth

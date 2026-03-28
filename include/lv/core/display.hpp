@@ -8,7 +8,7 @@
  */
 
 #include <lvgl.h>
-#include "object.hpp"
+#include "objectref.hpp"
 #include "version.hpp"
 #include <cstdint>
 
@@ -34,8 +34,8 @@ public:
         return lv_display_get_vertical_resolution(m_display);
     }
 
-    [[nodiscard]] ObjectView screen_active() const noexcept {
-        return ObjectView(lv_display_get_screen_active(m_display));
+    [[nodiscard]] ObjectRef screen_active() const noexcept {
+        return ObjectRef(lv_display_get_screen_active(m_display));
     }
 
     /// Set theme for this display
@@ -91,18 +91,18 @@ public:
     // ==================== Layers ====================
 
     /// Get top layer (above normal screens, for popups/overlays)
-    [[nodiscard]] ObjectView layer_top() const noexcept {
-        return ObjectView(lv_display_get_layer_top(m_display));
+    [[nodiscard]] ObjectRef layer_top() const noexcept {
+        return ObjectRef(lv_display_get_layer_top(m_display));
     }
 
     /// Get system layer (topmost, for system-level overlays like cursor)
-    [[nodiscard]] ObjectView layer_sys() const noexcept {
-        return ObjectView(lv_display_get_layer_sys(m_display));
+    [[nodiscard]] ObjectRef layer_sys() const noexcept {
+        return ObjectRef(lv_display_get_layer_sys(m_display));
     }
 
     /// Get bottom layer (below normal screens)
-    [[nodiscard]] ObjectView layer_bottom() const noexcept {
-        return ObjectView(lv_display_get_layer_bottom(m_display));
+    [[nodiscard]] ObjectRef layer_bottom() const noexcept {
+        return ObjectRef(lv_display_get_layer_bottom(m_display));
     }
 
     // ==================== Coordinate Transform ====================
