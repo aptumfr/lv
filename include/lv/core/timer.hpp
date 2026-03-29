@@ -255,10 +255,40 @@ Timer timer_periodic(uint32_t period_ms, T* instance) {
     return Timer::create<MemFn>(period_ms, instance);
 }
 
-/// Get a non-owning Timer handle for pause/resume without ownership
-/// Same pattern as lv::ref() for objects.
-inline Timer timer_ref(lv_timer_t* t) noexcept {
-    return Timer(t);
+/**
+ * @brief Non-owning, copyable timer handle
+ *
+ * Like ObjectView for objects — holds a pointer without managing lifetime.
+ * Safe to capture in lambdas for pause/resume control.
+ */
+class TimerRef {
+    lv_timer_t* m_timer;
+
+public:
+    explicit constexpr TimerRef(lv_timer_t* t) noexcept : m_timer(t) {}
+
+    /// Construct from owning Timer (rejects temporaries)
+    TimerRef(Timer& t) noexcept : m_timer(t.get()) {}
+
+    [[nodiscard]] lv_timer_t* get() const noexcept { return m_timer; }
+    [[nodiscard]] explicit operator bool() const noexcept { return m_timer != nullptr; }
+
+    TimerRef& pause() noexcept { lv_timer_pause(m_timer); return *this; }
+    TimerRef& resume() noexcept { lv_timer_resume(m_timer); return *this; }
+    [[nodiscard]] bool is_paused() const noexcept { return lv_timer_get_paused(m_timer); }
+    TimerRef& reset() noexcept { lv_timer_reset(m_timer); return *this; }
+    TimerRef& period(uint32_t ms) noexcept { lv_timer_set_period(m_timer, ms); return *this; }
+    TimerRef& ready() noexcept { lv_timer_ready(m_timer); return *this; }
+};
+
+/// Get a non-owning, copyable timer handle
+inline TimerRef timer_ref(lv_timer_t* t) noexcept {
+    return TimerRef(t);
+}
+
+/// Get a non-owning, copyable handle from an owning Timer
+inline TimerRef timer_ref(Timer& t) noexcept {
+    return TimerRef(t);
 }
 
 /// Get idle percentage (0-100)
