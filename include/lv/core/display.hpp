@@ -114,11 +114,31 @@ public:
     }
 #endif
 
+    // ==================== Configuration ====================
+
+    /// Set flush callback
+    Display& flush_cb(lv_display_flush_cb_t cb) noexcept {
+        lv_display_set_flush_cb(m_display, cb);
+        return *this;
+    }
+
+    /// Set display buffers
+    Display& buffers(void* buf1, void* buf2, uint32_t size_bytes,
+                     lv_display_render_mode_t mode) noexcept {
+        lv_display_set_buffers(m_display, buf1, buf2, size_bytes, mode);
+        return *this;
+    }
+
     // ==================== Static ====================
 
     /// Get default display
     [[nodiscard]] static Display get_default() noexcept {
         return Display(lv_display_get_default());
+    }
+
+    /// Create a new display with given resolution
+    [[nodiscard]] static Display create(int32_t width, int32_t height) noexcept {
+        return Display(lv_display_create(width, height));
     }
 };
 

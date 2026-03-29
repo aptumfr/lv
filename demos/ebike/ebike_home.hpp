@@ -382,7 +382,7 @@ private:
         cont.child(0).add_state(lv::kState::checked);
 
         // Add scroll handler using on_scroll_end with user_data
-        lv_obj_add_event_cb(parent.get(), [](lv_event_t* e) {
+        lv::ref(parent).on_raw(lv::kEvent::scroll_end, [](lv_event_t* e) {
             lv::Event event(e);
             auto main_cont = event.target();
             auto bullet_cont = lv::ref(static_cast<lv_obj_t*>(event.user_data()));
@@ -394,7 +394,7 @@ private:
                 bullet_cont.child(i).remove_state(lv::kState::checked);
             }
             bullet_cont.child(idx).add_state(lv::kState::checked);
-        }, lv::kEvent::scroll_end, cont.get());
+        }, cont.get());
     }
 };
 

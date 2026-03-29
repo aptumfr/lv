@@ -360,4 +360,9 @@ inline uint32_t tick_get() noexcept {
     return lv_tick_get();
 }
 
+/// Advance LVGL tick by given milliseconds (for testing or custom tick sources)
+inline void tick_inc(uint32_t ms) noexcept {
+    lv_tick_inc(ms);
+}
+
 } // namespace lv

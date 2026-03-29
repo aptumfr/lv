@@ -483,6 +483,13 @@ public:
         return on_simple<MemFn>(code, instance);
     }
 
+    // ==================== Send ====================
+
+    /// Send an event to this object (for programmatic event simulation)
+    lv_result_t send_event(lv_event_code_t code, void* param = nullptr) noexcept {
+        return lv_obj_send_event(obj(), code, param);
+    }
+
     // ==================== Removal ====================
 
     /// Remove callback descriptor by index

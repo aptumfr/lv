@@ -59,7 +59,7 @@ class WeatherScreen;
 inline void animate_x(lv_obj_t* obj, int32_t x, int32_t duration, int32_t delay) {
     lv::Anim()
         .exec_translate_x(lv::ObjectView(obj))
-        .values(lv_obj_get_style_translate_x(obj, lv::kPart::main), x)
+        .values(lv::ref(obj).get_translate_x(), x)
         .duration(duration)
         .delay(delay)
         .start();
@@ -77,7 +77,7 @@ inline void animate_x_from(lv_obj_t* obj, int32_t start, int32_t x, int32_t dura
 inline void animate_y(lv_obj_t* obj, int32_t y, int32_t duration, int32_t delay) {
     lv::Anim()
         .exec_translate_y(lv::ObjectView(obj))
-        .values(lv_obj_get_style_translate_y(obj, lv::kPart::main), y)
+        .values(lv::ref(obj).get_translate_y(), y)
         .duration(duration)
         .delay(delay)
         .start();
@@ -86,7 +86,7 @@ inline void animate_y(lv_obj_t* obj, int32_t y, int32_t duration, int32_t delay)
 inline void animate_opa(lv_obj_t* obj, lv_opa_t opa, int32_t duration, int32_t delay) {
     lv::Anim()
         .exec_opa(lv::ObjectView(obj))
-        .values(lv_obj_get_style_opa(obj, lv::kPart::main), opa)
+        .values(lv::ref(obj).get_opa(), opa)
         .duration(duration)
         .delay(delay)
         .start();
