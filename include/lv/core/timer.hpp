@@ -273,12 +273,12 @@ public:
     [[nodiscard]] lv_timer_t* get() const noexcept { return m_timer; }
     [[nodiscard]] explicit operator bool() const noexcept { return m_timer != nullptr; }
 
-    TimerRef& pause() noexcept { lv_timer_pause(m_timer); return *this; }
-    TimerRef& resume() noexcept { lv_timer_resume(m_timer); return *this; }
+    const TimerRef& pause() const noexcept { lv_timer_pause(m_timer); return *this; }
+    const TimerRef& resume() const noexcept { lv_timer_resume(m_timer); return *this; }
     [[nodiscard]] bool is_paused() const noexcept { return lv_timer_get_paused(m_timer); }
-    TimerRef& reset() noexcept { lv_timer_reset(m_timer); return *this; }
-    TimerRef& period(uint32_t ms) noexcept { lv_timer_set_period(m_timer, ms); return *this; }
-    TimerRef& ready() noexcept { lv_timer_ready(m_timer); return *this; }
+    const TimerRef& reset() const noexcept { lv_timer_reset(m_timer); return *this; }
+    const TimerRef& period(uint32_t ms) const noexcept { lv_timer_set_period(m_timer, ms); return *this; }
+    const TimerRef& ready() const noexcept { lv_timer_ready(m_timer); return *this; }
 };
 
 /// Get a non-owning, copyable timer handle
