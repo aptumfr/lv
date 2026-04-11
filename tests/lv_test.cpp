@@ -153,6 +153,27 @@ TEST_CASE("Event::target returns ObjectRef") {
 // Style getters
 // ============================================================
 
+TEST_CASE("get_x/get_y and layout-vs-style dichotomy") {
+    LvglFixture lv;
+    auto box = lv::Box::create(lv.screen()).size(50, 30);
+
+    // Set position via the fluent style setter
+    box.pos(75, 42);
+
+    // Style getters reflect the set value immediately
+    CHECK(box.get_style_x() == 75);
+    CHECK(box.get_style_y() == 42);
+    CHECK(box.get_style_width() == 50);
+    CHECK(box.get_style_height() == 30);
+
+    // Layout-resolved getters require a layout pass
+    lv.update_layout();
+    CHECK(box.get_x() == 75);
+    CHECK(box.get_y() == 42);
+    CHECK(box.get_width() == 50);
+    CHECK(box.get_height() == 30);
+}
+
 TEST_CASE("style getters match setters") {
     LvglFixture lv;
     auto box = lv::Box::create(lv.screen());

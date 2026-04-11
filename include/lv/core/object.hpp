@@ -160,15 +160,60 @@ public:
     }
 
     // ==================== Geometry Getters ====================
+    //
+    // Two flavors of geometry accessors are exposed:
+    //
+    //   get_x()        — LAYOUT-RESOLVED x (what LVGL has actually placed)
+    //   get_style_x()  — STYLE x (the last value written via pos()/x())
+    //
+    // LVGL resolves layout lazily, so a value just written via `pos()` /
+    // `x()` / `y()` will not be reflected in the layout-resolved getters
+    // until LVGL has run a layout pass (typically on the next refresh
+    // or after an explicit `update_layout()` call).
+    //
+    // Use the layout-resolved getters when you want to know where the
+    // object actually is on screen. Use the style getters when you want
+    // to read back the exact value you just set without waiting for
+    // layout. This dichotomy mirrors LVGL's own C API.
 
-    /// Get object width
+    /// Get object x position (layout-resolved).
+    [[nodiscard]] int32_t get_x() const noexcept {
+        return lv_obj_get_x(m_obj);
+    }
+
+    /// Get object y position (layout-resolved).
+    [[nodiscard]] int32_t get_y() const noexcept {
+        return lv_obj_get_y(m_obj);
+    }
+
+    /// Get object width (layout-resolved).
     [[nodiscard]] int32_t get_width() const noexcept {
         return lv_obj_get_width(m_obj);
     }
 
-    /// Get object height
+    /// Get object height (layout-resolved).
     [[nodiscard]] int32_t get_height() const noexcept {
         return lv_obj_get_height(m_obj);
+    }
+
+    /// Get the style x value (last set, NOT layout-resolved).
+    [[nodiscard]] int32_t get_style_x() const noexcept {
+        return lv_obj_get_style_x(m_obj, LV_PART_MAIN);
+    }
+
+    /// Get the style y value (last set, NOT layout-resolved).
+    [[nodiscard]] int32_t get_style_y() const noexcept {
+        return lv_obj_get_style_y(m_obj, LV_PART_MAIN);
+    }
+
+    /// Get the style width value (last set, NOT layout-resolved).
+    [[nodiscard]] int32_t get_style_width() const noexcept {
+        return lv_obj_get_style_width(m_obj, LV_PART_MAIN);
+    }
+
+    /// Get the style height value (last set, NOT layout-resolved).
+    [[nodiscard]] int32_t get_style_height() const noexcept {
+        return lv_obj_get_style_height(m_obj, LV_PART_MAIN);
     }
 
     /// Get content width (excluding padding)
@@ -379,20 +424,37 @@ public:
     }
 
     // ==================== Position ====================
+    //
+    // These write the local style x/y. LVGL resolves layout lazily, so
+    // the value returned by `get_x()` / `get_y()` will NOT reflect what
+    // you just set until LVGL has run a layout pass (typically on the
+    // next refresh or after an explicit `update_layout()` call).
+    //
+    // If you need to read back the value immediately after setting it:
+    //   - call `update_layout()` first, then `get_x()` / `get_y()`, or
+    //   - use `get_style_x()` / `get_style_y()` to read the style value
+    //     directly without waiting for layout.
 
-    /// Set position relative to parent
+    /// Set position relative to parent.
+    /// @note Layout-resolved `get_x()`/`get_y()` will not update until a
+    ///       layout pass runs. Use `get_style_x()`/`get_style_y()` for
+    ///       immediate read-back. See the Position section note above.
     Derived& pos(int32_t x, int32_t y) noexcept {
         lv_obj_set_pos(obj(), x, y);
         return *static_cast<Derived*>(this);
     }
 
-    /// Set X position
+    /// Set X position.
+    /// @note Layout-resolved `get_x()` will not update until a layout
+    ///       pass runs. Use `get_style_x()` for immediate read-back.
     Derived& x(int32_t x) noexcept {
         lv_obj_set_x(obj(), x);
         return *static_cast<Derived*>(this);
     }
 
-    /// Set Y position
+    /// Set Y position.
+    /// @note Layout-resolved `get_y()` will not update until a layout
+    ///       pass runs. Use `get_style_y()` for immediate read-back.
     Derived& y(int32_t y) noexcept {
         lv_obj_set_y(obj(), y);
         return *static_cast<Derived*>(this);

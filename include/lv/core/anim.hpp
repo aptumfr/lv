@@ -56,6 +56,21 @@ namespace anim_path {
  *
  * Or use the object animation helpers:
  *   lv::anim_x(button, 0, 100).duration(500).start();
+ *
+ * @note No interruption / velocity preservation.
+ *
+ * lv::Anim is a thin fluent wrapper over LVGL's native lv_anim_t, which
+ * is a fire-and-forget duration + easing animation. It does NOT preserve
+ * velocity across retarget: starting a new animation on the same property
+ * while another is in flight snaps the value back to the new start and
+ * replays the easing curve from rest.
+ *
+ * If you need interruptible spring motion (drag-release, gesture handoff,
+ * rapid retarget, or any case where a value is already in motion when
+ * you want to redirect it), this class is not the right tool — you will
+ * need a spring/physics integrator layered on top, or a hand-rolled state
+ * machine that tracks the current animated value and feeds it back in
+ * via lv_anim_set_values() before restarting.
  */
 class Anim {
     lv_anim_t m_anim;
