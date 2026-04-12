@@ -38,7 +38,11 @@ class Box : public ObjectView,
             public EventMixin<Box>,
             public StyleMixin<Box> {
 public:
-    /// Default constructor (null/invalid box)
+    /// Default constructor (null until assigned via create() or wrap).
+    ///
+    /// Use this for deferred-init members:
+    ///   lv::Box m_panel{};           // null here
+    ///   m_panel = lv::Box::create(parent);  // real widget later
     constexpr Box() noexcept : ObjectView(nullptr) {}
 
     /// Wrap an existing lv_obj_t* as a Box (does NOT create a new object)

@@ -95,7 +95,29 @@ public:
     /// Get the underlying LVGL object pointer
     [[nodiscard]] constexpr lv_obj_t* get() const noexcept { return m_obj; }
 
-    /// Implicit conversion to lv_obj_t* for C API interop
+    /// Implicit conversion to lv_obj_t* for C API interop.
+    ///
+    /// @warning This conversion is a sharp edge. It lets any widget be
+    /// passed to any C API that takes `lv_obj_t*`, including destructive
+    /// ones like `lv_obj_delete()` — which will free the underlying
+    /// object without the owning wrapper (lv::Object, lv::Component,
+    /// lv::ScreenComponent) knowing about it, leading to use-after-free
+    /// the next time the wrapper's destructor runs.
+    ///
+    /// It can also cause surprising overload resolution when a function
+    /// has both `f(ObjectView)` and `f(lv_obj_t*)` candidates, and
+    /// interacts awkwardly with null comparisons (`widget == nullptr`
+    /// routes through this operator, while `if (widget)` routes through
+    /// `explicit operator bool`).
+    ///
+    /// Rules of thumb:
+    ///   - For destructive or ownership-affecting C calls
+    ///     (lv_obj_delete, lv_obj_set_parent, etc.), prefer the C++
+    ///     wrapper (.del(), .set_parent(), etc.) so owning wrappers
+    ///     stay in sync.
+    ///   - For read-only C API calls that have no wrapper equivalent,
+    ///     pass `.get()` explicitly so the intent is visible at the
+    ///     call site.
     [[nodiscard]] constexpr operator lv_obj_t*() const noexcept { return m_obj; }
 
     /// Check if the view points to a valid object
@@ -124,6 +146,11 @@ public:
     /// Check if object has state
     [[nodiscard]] bool has_state(lv_state_t state) const noexcept {
         return lv_obj_has_state(m_obj, state);
+    }
+
+    /// Get the full state bitmask (LV_STATE_* flags OR'd together)
+    [[nodiscard]] lv_state_t get_state() const noexcept {
+        return lv_obj_get_state(m_obj);
     }
 
     /// Check if object has flag

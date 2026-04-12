@@ -27,6 +27,15 @@ class Grid : public ObjectView,
              public EventMixin<Grid>,
              public StyleMixin<Grid> {
 public:
+    // Grid declares its own align() for grid column/row alignment,
+    // which would otherwise hide ObjectMixin<Grid>::align() for
+    // object positioning (C++ name hiding applies to all base
+    // overloads). Re-expose the object-positioning overloads so
+    // users can still call e.g. Grid(parent).align(LV_ALIGN_CENTER, 0, 0).
+    // Overload resolution distinguishes the two by argument type
+    // (lv_align_t vs lv_grid_align_t).
+    using ObjectMixin<Grid>::align;
+
     // ==================== Nested Types ====================
 
     /// Fractional unit for grid tracks (like CSS fr)

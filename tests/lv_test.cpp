@@ -153,6 +153,32 @@ TEST_CASE("Event::target returns ObjectRef") {
 // Style getters
 // ============================================================
 
+TEST_CASE("get_state returns full state bitmask") {
+    LvglFixture lv;
+    auto btn = lv::Button::create(lv.screen());
+
+    // Initial state — typically empty
+    lv_state_t initial = btn.get_state();
+    CHECK((initial & LV_STATE_CHECKED) == 0);
+    CHECK((initial & LV_STATE_DISABLED) == 0);
+
+    // Add CHECKED — bitmask should reflect it, and has_state should agree
+    btn.add_state(LV_STATE_CHECKED);
+    CHECK((btn.get_state() & LV_STATE_CHECKED) != 0);
+    CHECK(btn.has_state(LV_STATE_CHECKED));
+
+    // Add DISABLED — both flags should now be set in the bitmask
+    btn.add_state(LV_STATE_DISABLED);
+    lv_state_t both = btn.get_state();
+    CHECK((both & LV_STATE_CHECKED) != 0);
+    CHECK((both & LV_STATE_DISABLED) != 0);
+
+    // Remove CHECKED — bitmask loses it, keeps DISABLED
+    btn.remove_state(LV_STATE_CHECKED);
+    CHECK((btn.get_state() & LV_STATE_CHECKED) == 0);
+    CHECK((btn.get_state() & LV_STATE_DISABLED) != 0);
+}
+
 TEST_CASE("get_x/get_y and layout-vs-style dichotomy") {
     LvglFixture lv;
     auto box = lv::Box::create(lv.screen()).size(50, 30);
@@ -345,8 +371,7 @@ TEST_CASE("Timer once() disables auto-delete") {
 
     {
         lv::Timer timer([](lv_timer_t* t) {
-            lv::Timer wrapped(t); // non-owning wrap
-            auto* count = static_cast<int*>(wrapped.user_data());
+            auto* count = lv::timer_ref(t).user_data_as<int>();
             (*count)++;
         }, 1, &fire_count);
         timer.once();

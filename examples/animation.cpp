@@ -49,7 +49,7 @@ class AnimationDemo {
     int m_completed = 0;
 
     // Timer for auto-run feature
-    lv::Timer m_auto_timer{nullptr};
+    lv::Timer m_auto_timer{};
     bool m_auto_enabled = false;
 
 public:

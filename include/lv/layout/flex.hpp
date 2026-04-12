@@ -28,6 +28,15 @@ class Flex : public ObjectView,
              public EventMixin<Flex>,
              public StyleMixin<Flex> {
 public:
+    // Flex declares its own align() for flex-content alignment, which
+    // would otherwise hide ObjectMixin<Flex>::align() for object
+    // positioning (C++ name hiding applies to all base overloads).
+    // Re-expose the object-positioning overloads so users can still
+    // call e.g. hbox(parent).align(LV_ALIGN_TOP_MID, 0, 10).
+    // Overload resolution distinguishes the two by argument type
+    // (lv_align_t vs lv_flex_align_t).
+    using ObjectMixin<Flex>::align;
+
     /// Create a flex container with specified flow
     explicit Flex(ObjectView parent, lv_flex_flow_t flow = LV_FLEX_FLOW_ROW)
         : ObjectView(lv_obj_create(parent)) {

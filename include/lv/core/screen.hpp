@@ -81,12 +81,17 @@ public:
 
     // ==================== Loading ====================
 
-    /// Load this screen (make active)
+    /// Load this screen (make active).
+    /// @note The previously active screen is NOT deleted — it stays in
+    ///       memory and can be loaded again later. If you don't need it,
+    ///       delete it yourself or use load_anim() with auto_del = true.
     void load() noexcept {
         lv_screen_load(m_obj);
     }
 
-    /// Load with animation
+    /// Load with animation.
+    /// @param auto_del If true, the old screen is deleted after the
+    ///                 transition finishes.
     void load_anim(lv_screen_load_anim_t anim, uint32_t time_ms,
                    uint32_t delay_ms = 0, bool auto_del = false) noexcept {
         lv_screen_load_anim(m_obj, anim, time_ms, delay_ms, auto_del);

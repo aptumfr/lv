@@ -36,7 +36,7 @@ class HomePage {
     lv::IntState m_speed_roller{0};
 
     // RAII timer - automatically deleted in destructor
-    lv::Timer m_anim_timer{nullptr};
+    lv::Timer m_anim_timer{};
 
 public:
     void init() {
@@ -44,8 +44,8 @@ public:
     }
 
     void deinit() {
-        // Timer cleanup is automatic (RAII)
-        m_anim_timer = lv::Timer(nullptr);  // Reset to release timer
+        // Release the current timer (if any) by move-assigning an empty Timer
+        m_anim_timer = lv::Timer{};
     }
 
     void create(lv::ObjectView parent) {

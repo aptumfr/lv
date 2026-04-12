@@ -70,8 +70,10 @@ public:
         return *this;
     }
 
-    /// Set line width
-    Line& width(int32_t w) noexcept {
+    /// Set line stroke width (the drawn line thickness, NOT the widget's
+    /// bounding box width — use the inherited width()/size() from
+    /// ObjectMixin for the latter).
+    Line& line_width(int32_t w) noexcept {
         lv_obj_set_style_line_width(m_obj, w, 0);
         return *this;
     }

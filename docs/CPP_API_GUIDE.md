@@ -348,42 +348,120 @@ Member function signatures supported:
 
 ## Object Wrapping
 
-### Wrapping Existing Objects
+The wrapper exposes four related pointer-sized types for working with LVGL
+objects. Knowing which one you want saves a surprising amount of confusion —
+they differ on whether they own the underlying `lv_obj_t`, whether they have
+fluent setters, and where each one typically comes from.
 
-To wrap an existing `lv_obj_t*` pointer:
+### Cheatsheet
+
+| Type                             | Owns?             | Fluent setters?       | Fluent getters? | Where it comes from                                                                          |
+|----------------------------------|-------------------|-----------------------|-----------------|----------------------------------------------------------------------------------------------|
+| `ObjectView`                     | No                | **No** (getters only) | Yes             | Function parameter accepting any widget; `Component::build()` return                         |
+| `ObjectRef`                      | No                | Yes                   | Yes             | `lv::ref(ptr)`, `widget.parent()`, `widget.child(i)`, `Msgbox::add_title()`, `layer_top()` …   |
+| `Object`                         | Yes (RAII)        | **No** (getters only) | Yes             | `lv::Object obj(parent)` direct construction — rare, prefer typed widgets below              |
+| `Box` / `Label` / `Button` / …    | No (parent cleans) | Yes                   | Yes             | `Box::create(parent)`, `Box{wrap, existing}`, `Box{}` (deferred init)                          |
+
+Read the columns as "which mixin does it inherit?":
+
+- `ObjectView` is the base class. Nothing but getters.
+- `ObjectRef` = `ObjectView` + `ObjectMixin` + `StyleMixin` + `EventMixin`.
+  The full fluent API on a non-owning handle.
+- `Object` = `ObjectView` + RAII destructor. Owns the `lv_obj_t`, but no
+  fluent setters (intentionally — you usually want a typed widget instead).
+- Widget wrappers (`Box`, `Label`, `Button`, …) = `ObjectView` + all three
+  mixins + widget-specific methods. Non-owning views over an LVGL object
+  whose lifetime is managed by its parent.
+
+All four types are exactly pointer-sized — they store nothing but an
+`lv_obj_t*`. Passing them around is just as cheap as passing a raw pointer.
+
+### Picking the right type
+
+**When declaring a function parameter**: use `lv::ObjectView` if you only
+need to read state, or `lv::ObjectRef` if you need to set anything.
+`ObjectView` accepts any widget by slicing (because every widget inherits
+from it); `ObjectRef` has an implicit constructor from `ObjectView` for the
+same reason.
+
+```cpp
+// Read-only helper — takes any widget
+int32_t bottom_of(lv::ObjectView w) {
+    return w.get_y() + w.get_height();
+}
+
+// Setter helper — needs fluent setters, so takes ObjectRef
+void stamp_theme(lv::ObjectRef w) {
+    w.bg_color(lv::rgb(0x333333))
+     .radius(8)
+     .padding(10);
+}
+
+stamp_theme(my_button);   // Box, Button, Arc, … all convert implicitly
+```
+
+**When declaring a member**: use the typed widget (`lv::Box m_panel;`).
+It's zero-cost, gives you the full fluent API, and is self-documenting.
+
+```cpp
+class MyComponent : public lv::Component<MyComponent> {
+    lv::Box m_panel{};      // deferred init, null until set in build()
+    lv::Label m_title{};
+    // ...
+};
+```
+
+**When you have a raw `lv_obj_t*`**: wrap it with `lv::ref(ptr)` to get an
+`ObjectRef` with the full fluent API. Don't construct a typed widget unless
+you know the object really is that type (use `Widget{lv::wrap, ptr}` then).
+
+```cpp
+lv_obj_t* raw = some_c_api_that_returns_a_pointer();
+lv::ref(raw).bg_color(lv::rgb(0xFF0000)).radius(4);
+```
+
+**When you want RAII for a bare `lv_obj`**: `lv::Object obj(parent)`
+constructs one and deletes it in the destructor. Rarely what you want —
+typed widgets (`lv::Box`, etc.) are usually more appropriate even though
+they don't own by default, because LVGL cleans up via the parent-child
+tree.
+
+### Wrapping existing objects
+
+To wrap an existing `lv_obj_t*` pointer into a typed widget:
 
 ```cpp
 // Using the wrap tag
 lv_obj_t* raw_ptr = lv_label_create(parent);
 auto label = lv::Label(lv::wrap, raw_ptr);
 
-// Now use C++ API
+// Now use the C++ API
 label.text("Hello").center();
 ```
 
-### Getting Raw Pointer
+Or to get the full fluent API without committing to a specific widget type:
+
+```cpp
+lv::ref(raw_ptr).bg_color(lv::rgb(0)).padding(10);
+```
+
+### Getting the raw pointer
+
+Every wrapper exposes `.get()` for the underlying `lv_obj_t*`:
 
 ```cpp
 auto btn = lv::Button::create(parent);
 lv_obj_t* raw = btn.get();  // Get underlying lv_obj_t*
 ```
 
-### ObjectView for Generic Access
-
-`ObjectView` is a non-owning view that works with any LVGL object:
-
-```cpp
-void style_any_widget(lv::ObjectView obj) {
-    obj.size(100, 100)
-       .center()
-       .bg_color(lv::rgb(0x333333));
-}
-
-// Works with any widget type
-style_any_widget(button);
-style_any_widget(arc);
-style_any_widget(label);
-```
+There's also an implicit conversion `operator lv_obj_t*()` that lets widgets
+be passed directly to C API functions — **but be careful**: passing an owned
+widget to a destructive C call like `lv_obj_delete()` will free it without
+the wrapper knowing, leading to use-after-free when the wrapper's destructor
+later runs. Prefer the C++ wrapper (`.del()`, `.set_parent()`, etc.) for
+anything that affects ownership or lifetime. For read-only C API calls
+without a wrapper equivalent, pass `.get()` explicitly so the intent is
+visible at the call site.
 
 ---
 

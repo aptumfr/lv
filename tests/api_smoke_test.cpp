@@ -432,6 +432,69 @@ struct Dummy {
 #endif
 
 // ============================================================
+// Flex/Grid align() name hiding: both the layout-specific and
+// object-positioning overloads must be callable on the same type.
+// Regression guard for C++ name-hiding — if either call below
+// stops compiling, someone dropped a `using` declaration.
+// ============================================================
+
+#if LV_USE_FLEX
+[[maybe_unused]] static void test_flex_align_not_shadowed() {
+    lv::Flex f = lv::hbox(lv::ObjectView(nullptr));
+
+    // Object-positioning overloads (from ObjectMixin<Flex>)
+    f.align(LV_ALIGN_TOP_MID, 0, 10);
+    f.align(LV_ALIGN_CENTER);
+
+    // Flex-content alignment overload (Flex's own)
+    f.align(LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    f.align(LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
+}
+#endif
+
+#if LV_USE_GRID
+[[maybe_unused]] static void test_grid_align_not_shadowed() {
+    lv::Grid g(lv::ObjectView(nullptr));
+
+    // Object-positioning overloads (from ObjectMixin<Grid>)
+    g.align(LV_ALIGN_TOP_MID, 0, 10);
+    g.align(LV_ALIGN_CENTER);
+
+    // Grid-specific column/row alignment overload (Grid's own)
+    g.align(LV_GRID_ALIGN_CENTER, LV_GRID_ALIGN_STRETCH);
+}
+#endif
+
+#if LV_USE_SPAN
+[[maybe_unused]] static void test_spangroup_align_not_shadowed() {
+    lv::Spangroup sg;
+
+    // Object-positioning overloads (from ObjectMixin<Spangroup>)
+    sg.align(LV_ALIGN_TOP_MID, 0, 10);
+    sg.align(LV_ALIGN_CENTER);
+
+    // Spangroup text-alignment overload (Spangroup's own)
+    sg.align(LV_TEXT_ALIGN_CENTER);
+    sg.align(LV_TEXT_ALIGN_LEFT);
+}
+#endif
+
+#if LV_USE_LINE
+[[maybe_unused]] static void test_line_width_not_shadowed() {
+    lv::Line line;
+
+    // Widget bounding-box width (from ObjectMixin<Line>) must still
+    // be accessible after renaming the line-stroke-width setter.
+    line.width(100);
+    line.size(200, 50);
+    line.height(50);
+
+    // Line-stroke width has its own name now to avoid the semantic clash.
+    line.line_width(5);
+}
+#endif
+
+// ============================================================
 // Slider::bind and Switch::bind with State<T>
 // ============================================================
 

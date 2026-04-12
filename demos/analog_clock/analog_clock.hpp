@@ -92,7 +92,7 @@ class AnalogClockDemo {
     lv::Box m_menu_knob;
 
     // RAII timer - automatically deleted in destructor
-    lv::Timer m_timer{nullptr};
+    lv::Timer m_timer{};
 
     // Hand pivot points (from image dimensions)
     static constexpr int kHourPivotX = 9;
@@ -171,8 +171,8 @@ public:
     }
 
     void destroy() {
-        // Timer RAII handles cleanup, but explicit reset allows early deletion
-        m_timer = lv::Timer{nullptr};
+        // Release the current timer (move-assign an empty Timer)
+        m_timer = lv::Timer{};
     }
 
 private:

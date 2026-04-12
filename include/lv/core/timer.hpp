@@ -72,11 +72,23 @@ class Timer {
     bool m_owned = true;
 
 public:
+    /// Default-construct an empty/null Timer (owns nothing).
+    ///
+    /// Use this for deferred-init members: `lv::Timer m_timer{};` then
+    /// move-assign later once you know the callback and period.
+    constexpr Timer() noexcept : m_timer(nullptr), m_owned(false) {}
+
     /// Create timer with callback and period
     Timer(lv_timer_cb_t cb, uint32_t period_ms, void* user_data = nullptr) noexcept
         : m_timer(lv_timer_create(cb, period_ms, user_data)), m_owned(true) {}
 
-    /// Wrap existing timer (non-owning)
+    /// Wrap existing timer (non-owning).
+    /// @deprecated Use lv::timer_ref(raw) / lv::TimerRef instead — TimerRef
+    ///             is the dedicated non-owning handle. This constructor
+    ///             remains for the default-constructed empty case, but
+    ///             new callers should prefer TimerRef for non-owning wraps.
+    [[deprecated("Use lv::TimerRef / lv::timer_ref() for non-owning timer handles; "
+                 "use Timer{} for empty/null Timer members.")]]
     explicit Timer(lv_timer_t* timer) noexcept
         : m_timer(timer), m_owned(false) {}
 
@@ -279,6 +291,17 @@ public:
     const TimerRef& reset() const noexcept { lv_timer_reset(m_timer); return *this; }
     const TimerRef& period(uint32_t ms) const noexcept { lv_timer_set_period(m_timer, ms); return *this; }
     const TimerRef& ready() const noexcept { lv_timer_ready(m_timer); return *this; }
+
+    /// Get user data pointer.
+    [[nodiscard]] void* user_data() const noexcept {
+        return lv_timer_get_user_data(m_timer);
+    }
+
+    /// Get user data as typed pointer.
+    template<typename T>
+    [[nodiscard]] T* user_data_as() const noexcept {
+        return static_cast<T*>(lv_timer_get_user_data(m_timer));
+    }
 };
 
 /// Get a non-owning, copyable timer handle

@@ -24,6 +24,15 @@ class Spangroup : public ObjectView,
                   public EventMixin<Spangroup>,
                   public StyleMixin<Spangroup> {
 public:
+    // Spangroup declares its own align() for text alignment, which
+    // would otherwise hide ObjectMixin<Spangroup>::align() for
+    // object positioning (C++ name hiding applies to all base
+    // overloads). Re-expose the object-positioning overloads so
+    // users can still call e.g. span.align(LV_ALIGN_CENTER).
+    // Overload resolution distinguishes the two by argument type
+    // (lv_align_t vs lv_text_align_t).
+    using ObjectMixin<Spangroup>::align;
+
     constexpr Spangroup() noexcept : ObjectView(nullptr) {}
     constexpr Spangroup(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 

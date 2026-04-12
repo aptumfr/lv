@@ -142,7 +142,7 @@ private:
     }
 
     static void timer_cb(lv_timer_t* timer) {
-        auto* self = static_cast<ChartDemo*>(lv::Timer(timer).user_data());
+        auto* self = lv::timer_ref(timer).user_data_as<ChartDemo>();
         self->m_tick++;
 
         // Add new sine point
