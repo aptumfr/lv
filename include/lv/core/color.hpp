@@ -67,6 +67,11 @@ inline uint8_t color_brightness(lv_color_t color) noexcept {
     return lv_color_brightness(color);
 }
 
+/// Convert a color to 0xAARRGGBB (alpha is always 0xFF for lv_color_t)
+inline uint32_t color_to_u32(lv_color_t color) noexcept {
+    return lv_color_to_u32(color);
+}
+
 /// Convert HSV to RGB color (separate components)
 inline lv_color_t hsv_to_rgb(uint16_t h, uint8_t s, uint8_t v) noexcept {
     return lv_color_hsv_to_rgb(h, s, v);

@@ -142,6 +142,10 @@ public:
     }
 };
 
+inline Display ObjectView::display() const noexcept {
+    return Display(lv_obj_get_display(m_obj));
+}
+
 
 #if LV_USE_X11
 /**

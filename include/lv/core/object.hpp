@@ -20,6 +20,7 @@ namespace lv {
 // Forward declarations
 class Style;
 class ObjectRef;
+class Display;
 
 // ==================== Feature Detection ====================
 
@@ -163,6 +164,12 @@ public:
     /// Get parent object
     [[nodiscard]] inline ObjectRef parent() const noexcept;
 
+    /// Get the screen containing this object
+    [[nodiscard]] inline ObjectRef screen() const noexcept;
+
+    /// Get the display containing this object
+    [[nodiscard]] inline Display display() const noexcept;
+
     /// Get child count
     [[nodiscard]] uint32_t child_count() const noexcept {
         return lv_obj_get_child_count(m_obj);
@@ -170,6 +177,38 @@ public:
 
     /// Get child by index
     [[nodiscard]] inline ObjectRef child(int32_t idx) const noexcept;
+
+    /// Get child by index, considering only children of a given LVGL class
+    [[nodiscard]] inline ObjectRef child_by_type(int32_t idx,
+                                                 const lv_obj_class_t* class_p) const noexcept;
+
+    /// Get the number of children of a given LVGL class
+    [[nodiscard]] uint32_t child_count_by_type(const lv_obj_class_t* class_p) const noexcept {
+        return lv_obj_get_child_count_by_type(m_obj, class_p);
+    }
+
+    /// Get a sibling relative to this object (0 = self, -1 = previous, 1 = next)
+    [[nodiscard]] inline ObjectRef sibling(int32_t idx) const noexcept;
+
+    /// Get a sibling relative to this object, considering only siblings of a given LVGL class
+    [[nodiscard]] inline ObjectRef sibling_by_type(int32_t idx,
+                                                   const lv_obj_class_t* class_p) const noexcept;
+
+    /// Get this object's index within its parent (-1 if no parent)
+    [[nodiscard]] int32_t get_index() const noexcept {
+        return lv_obj_get_index(m_obj);
+    }
+
+    /// Get this object's index among siblings of a given LVGL class (-1 if not found or no parent)
+    [[nodiscard]] int32_t get_index_by_type(const lv_obj_class_t* class_p) const noexcept {
+        return lv_obj_get_index_by_type(m_obj, class_p);
+    }
+
+    /// Find a descendant by name using breadth-first search
+    [[nodiscard]] inline ObjectRef find_by_name(const char* name) const noexcept;
+
+    /// Find a descendant by name path relative to this object
+    [[nodiscard]] inline ObjectRef child_by_name(const char* name_path) const noexcept;
 
     // ==================== Deletion ====================
 
@@ -807,6 +846,18 @@ public:
         return *static_cast<Derived*>(this);
     }
 
+    /// Move object to a specific sibling index (-1 counts from the back)
+    Derived& move_to_index(int32_t index) noexcept {
+        lv_obj_move_to_index(obj(), index);
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Swap sibling positions with another object
+    Derived& swap(ObjectView other) noexcept {
+        lv_obj_swap(obj(), other.get());
+        return *static_cast<Derived*>(this);
+    }
+
     // ==================== Alignment ====================
 
     /// Align to another object
@@ -828,19 +879,19 @@ public:
     /// Set object name (requires LV_USE_OBJ_NAME in lv_conf.h)
     /// Useful for widget identification in UI automation and debugging
     Derived& name([[maybe_unused]] const char* name) noexcept {
-        if constexpr (has_obj_name) {
-            lv_obj_set_name(obj(), name);
-        }
+#if LV_USE_OBJ_NAME
+        lv_obj_set_name(obj(), name);
+#endif
         return *static_cast<Derived*>(this);
     }
 
     /// Get object name (returns nullptr if not set or LV_USE_OBJ_NAME is disabled)
     [[nodiscard]] const char* get_name() const noexcept {
-        if constexpr (has_obj_name) {
-            return lv_obj_get_name(obj());
-        } else {
-            return nullptr;
-        }
+#if LV_USE_OBJ_NAME
+        return lv_obj_get_name(obj());
+#else
+        return nullptr;
+#endif
     }
 };
 

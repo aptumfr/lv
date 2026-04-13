@@ -181,6 +181,40 @@ struct Dummy {
 }
 
 // ============================================================
+// Object ordering helpers
+// ============================================================
+
+[[maybe_unused]] static void test_object_ordering() {
+    lv::Button btn;
+    lv::Button other;
+
+    [[maybe_unused]] int32_t idx = btn.get_index();
+    btn.move_to_index(0);
+    btn.move_foreground();
+    btn.move_background();
+    btn.swap(other);
+}
+
+[[maybe_unused]] static void test_object_tree_accessors() {
+    lv::Button btn;
+
+    [[maybe_unused]] auto scr = btn.screen();
+    [[maybe_unused]] auto disp = btn.display();
+    [[maybe_unused]] auto sib = btn.sibling(1);
+    [[maybe_unused]] auto sib_typed = btn.sibling_by_type(1, &lv_button_class);
+    [[maybe_unused]] auto child_typed = btn.child_by_type(0, &lv_button_class);
+    [[maybe_unused]] auto child_count_typed = btn.child_count_by_type(&lv_button_class);
+    [[maybe_unused]] auto idx_typed = btn.get_index_by_type(&lv_button_class);
+
+    [[maybe_unused]] auto argb = lv::color_to_u32(lv::rgb(0x12, 0x34, 0x56));
+
+    if constexpr (lv::has_obj_name) {
+        [[maybe_unused]] auto found = btn.find_by_name("child");
+        [[maybe_unused]] auto by_path = btn.child_by_name("parent/child");
+    }
+}
+
+// ============================================================
 // LVGL 9.5+ gated APIs (regression: must compile when available)
 // ============================================================
 

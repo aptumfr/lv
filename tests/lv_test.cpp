@@ -179,6 +179,72 @@ TEST_CASE("get_state returns full state bitmask") {
     CHECK((btn.get_state() & LV_STATE_DISABLED) != 0);
 }
 
+TEST_CASE("object sibling ordering helpers") {
+    LvglFixture lv;
+    auto parent = lv::Box::create(lv.screen());
+    auto first = lv::Button::create(parent);
+    auto second = lv::Button::create(parent);
+    auto third = lv::Button::create(parent);
+
+    CHECK(first.get_index() == 0);
+    CHECK(second.get_index() == 1);
+    CHECK(third.get_index() == 2);
+
+    third.move_to_index(0);
+    CHECK(parent.child(0).get() == third.get());
+    CHECK(parent.child(1).get() == first.get());
+    CHECK(parent.child(2).get() == second.get());
+    CHECK(third.get_index() == 0);
+    CHECK(first.get_index() == 1);
+    CHECK(second.get_index() == 2);
+
+    first.swap(second);
+    CHECK(parent.child(1).get() == second.get());
+    CHECK(parent.child(2).get() == first.get());
+    CHECK(second.get_index() == 1);
+    CHECK(first.get_index() == 2);
+
+    second.move_background();
+    CHECK(parent.child(0).get() == second.get());
+    CHECK(second.get_index() == 0);
+}
+
+TEST_CASE("object tree accessors and color_to_u32") {
+    LvglFixture lv;
+    auto screen = lv::ref(lv.screen());
+    auto parent = lv::Box::create(screen);
+    auto first = lv::Button::create(parent);
+    auto middle = lv::Label::create(parent);
+    auto third = lv::Button::create(parent);
+    auto nested = lv::Label::create(first);
+
+    CHECK(first.screen().get() == screen.get());
+    CHECK(first.display().get() == lv::Display::get_default().get());
+
+    CHECK(parent.child_count_by_type(&lv_button_class) == 2);
+    CHECK(parent.child_by_type(0, &lv_button_class).get() == first.get());
+    CHECK(parent.child_by_type(1, &lv_button_class).get() == third.get());
+
+    CHECK(first.sibling(1).get() == middle.get());
+    CHECK(first.sibling_by_type(1, &lv_button_class).get() == third.get());
+
+    CHECK(first.get_index_by_type(&lv_button_class) == 0);
+    CHECK(third.get_index_by_type(&lv_button_class) == 1);
+
+    if constexpr (lv::has_obj_name) {
+        parent.name("parent");
+        first.name("first");
+        middle.name("middle");
+        third.name("third");
+        nested.name("nested");
+
+        CHECK(parent.find_by_name("nested").get() == nested.get());
+        CHECK(parent.child_by_name("first/nested").get() == nested.get());
+    }
+
+    CHECK(lv::color_to_u32(lv::rgb(0x12, 0x34, 0x56)) == 0xFF123456u);
+}
+
 TEST_CASE("get_x/get_y and layout-vs-style dichotomy") {
     LvglFixture lv;
     auto box = lv::Box::create(lv.screen()).size(50, 30);
