@@ -26,6 +26,9 @@ public:
 
     constexpr List(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_list_class; }
+
     [[nodiscard]] static List create(lv_obj_t* parent) {
         return List(wrap, lv_list_create(parent));
     }

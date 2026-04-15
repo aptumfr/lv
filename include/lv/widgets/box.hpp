@@ -49,6 +49,10 @@ public:
     /// Usage: auto box = lv::Box(lv::wrap, existing_obj);
     constexpr Box(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    /// Box wraps the generic lv_obj, so this returns &lv_obj_class.
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_obj_class; }
+
     // Default copy/move - copies the pointer, does NOT create new lv_obj
     Box(const Box&) = default;
     Box& operator=(const Box&) = default;

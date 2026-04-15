@@ -51,6 +51,7 @@
 #include "core/style.hpp"
 #include "core/objectref.hpp"
 #include "core/color.hpp"
+#include "core/math.hpp"
 #include "core/font.hpp"
 #include "core/display.hpp"
 #include "core/app.hpp"

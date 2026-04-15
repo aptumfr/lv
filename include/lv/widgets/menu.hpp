@@ -26,6 +26,9 @@ public:
 
     constexpr Menu(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_menu_class; }
+
     [[nodiscard]] static Menu create(lv_obj_t* parent) {
         return Menu(wrap, lv_menu_create(parent));
     }

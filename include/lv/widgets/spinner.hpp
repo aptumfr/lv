@@ -27,6 +27,9 @@ public:
     constexpr Spinner() noexcept : ObjectView(nullptr) {}
     constexpr Spinner(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_spinner_class; }
+
     [[nodiscard]] static Spinner create(lv_obj_t* parent, uint32_t anim_time = 1000, uint32_t arc_length = 60) {
         auto spinner = Spinner(wrap, lv_spinner_create(parent));
         lv_spinner_set_anim_params(spinner.get(), anim_time, arc_length);

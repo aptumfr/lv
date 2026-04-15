@@ -73,6 +73,9 @@ public:
     constexpr ArcLabel() noexcept : ObjectView(nullptr) {}
     constexpr ArcLabel(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_arclabel_class; }
+
     [[nodiscard]] static ArcLabel create(lv_obj_t* parent) {
         return ArcLabel(wrap, lv_arclabel_create(parent));
     }

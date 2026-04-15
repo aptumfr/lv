@@ -26,6 +26,9 @@ public:
 
     constexpr Tileview(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_tileview_class; }
+
     [[nodiscard]] static Tileview create(lv_obj_t* parent) {
         return Tileview(wrap, lv_tileview_create(parent));
     }

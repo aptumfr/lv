@@ -185,6 +185,13 @@ public:
         return p;
     }
 
+    /// Get movement delta since the last read — useful for gesture tracking.
+    [[nodiscard]] lv_point_t vect() const noexcept {
+        lv_point_t p;
+        lv_indev_get_vect(m_indev, &p);
+        return p;
+    }
+
     /// Get current key (for keypad devices)
     [[nodiscard]] uint32_t get_key() const noexcept {
         return lv_indev_get_key(m_indev);

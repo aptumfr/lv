@@ -26,6 +26,9 @@ public:
 
     constexpr Msgbox(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_msgbox_class; }
+
     /// Create message box (parent = nullptr for modal on active screen)
     [[nodiscard]] static Msgbox create(lv_obj_t* parent = nullptr) {
         return Msgbox(wrap, lv_msgbox_create(parent));

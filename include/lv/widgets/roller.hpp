@@ -27,6 +27,9 @@ public:
     constexpr Roller() noexcept : ObjectView(nullptr) {}
     constexpr Roller(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_roller_class; }
+
     [[nodiscard]] static Roller create(lv_obj_t* parent) {
         return Roller(wrap, lv_roller_create(parent));
     }

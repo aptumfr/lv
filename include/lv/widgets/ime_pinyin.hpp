@@ -48,6 +48,9 @@ public:
     constexpr IMEPinyin() noexcept : ObjectView(nullptr) {}
     constexpr IMEPinyin(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_ime_pinyin_class; }
+
     [[nodiscard]] static IMEPinyin create(lv_obj_t* parent) {
         return IMEPinyin(wrap, lv_ime_pinyin_create(parent));
     }

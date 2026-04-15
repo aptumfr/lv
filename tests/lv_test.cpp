@@ -1594,3 +1594,206 @@ TEST_CASE("Navigator") {
         lv::screen_load(original);
     }
 }
+
+// ============================================================
+// Type identification
+// ============================================================
+
+// Compile-time contract: which wrapper families participate in is<T>().
+//
+// Positive cases — representative coverage across wrapper families.
+// If you add a new widget wrapper that should support is<T>()/as<T>(),
+// add a line here so the contract stays visible.
+static_assert(lv::detail::has_lv_class<lv::Button>);     // plain widget
+static_assert(lv::detail::has_lv_class<lv::Label>);      // plain widget
+static_assert(lv::detail::has_lv_class<lv::Slider>);     // plain widget
+static_assert(lv::detail::has_lv_class<lv::Arc>);        // specialised widget
+static_assert(lv::detail::has_lv_class<lv::Chart>);      // data widget
+static_assert(lv::detail::has_lv_class<lv::Textarea>);   // interactive
+static_assert(lv::detail::has_lv_class<lv::Box>);        // generic container
+#if LV_USE_3DTEXTURE
+static_assert(lv::detail::has_lv_class<lv::Texture3D>);  // specialty widget
+#endif
+#if LV_USE_GIF
+static_assert(lv::detail::has_lv_class<lv::GIF>);        // lib-backed
+#endif
+#if LV_USE_QRCODE
+static_assert(lv::detail::has_lv_class<lv::QRCode>);     // lib-backed
+#endif
+#if LV_USE_BARCODE
+static_assert(lv::detail::has_lv_class<lv::Barcode>);    // lib-backed
+#endif
+
+// Negative cases — facades over lv_obj_class or layouts. Calling
+// is<Screen>(), is<Flex>(), etc. must fail to compile with a clear
+// constraint error, directing the user to a semantically appropriate
+// check instead (parent()==nullptr, get_layout(), etc.).
+static_assert(!lv::detail::has_lv_class<lv::Screen>);
+static_assert(!lv::detail::has_lv_class<lv::Flex>);
+static_assert(!lv::detail::has_lv_class<lv::Grid>);
+
+// Negative cases — LVGL builds these class pointers privately (no
+// `extern` declaration), so the C++ wrapper cannot legitimately
+// reference them. Do NOT manufacture a fake class_ptr() for these.
+#if LV_USE_LOTTIE
+static_assert(!lv::detail::has_lv_class<lv::Lottie>);
+#endif
+#if LV_USE_GLTF
+static_assert(!lv::detail::has_lv_class<lv::GLTF>);
+#endif
+
+TEST_CASE("Type check: is<T>() / as<T>() / check_type / has_class") {
+    LvglFixture lv;
+    auto parent = lv::ref(lv.screen());
+
+    auto btn = lv::Button::create(parent);
+    auto lbl = lv::Label::create(parent);
+
+    SUBCASE("is<T>() matches exact widget class") {
+        // Round-trip through an untyped ObjectRef to simulate a real lookup
+        lv::ObjectRef ref_btn(btn.get());
+        CHECK(ref_btn.is<lv::Button>());
+        CHECK_FALSE(ref_btn.is<lv::Label>());
+        CHECK_FALSE(ref_btn.is<lv::Box>());
+
+        lv::ObjectRef ref_lbl(lbl.get());
+        CHECK(ref_lbl.is<lv::Label>());
+        CHECK_FALSE(ref_lbl.is<lv::Button>());
+    }
+
+    SUBCASE("class_ptr() returns the LVGL class") {
+        CHECK(lv::Button::class_ptr() == &lv_button_class);
+        CHECK(lv::Label::class_ptr() == &lv_label_class);
+        CHECK(lv::Box::class_ptr() == &lv_obj_class);
+    }
+
+    SUBCASE("check_type() compares raw class pointer") {
+        CHECK(btn.check_type(&lv_button_class));
+        CHECK_FALSE(btn.check_type(&lv_label_class));
+    }
+
+    SUBCASE("has_class() includes inheritance (Box is lv_obj)") {
+        // All widgets inherit from lv_obj_class, so has_class on &lv_obj_class
+        // should succeed for every widget.
+        CHECK(btn.has_class(&lv_obj_class));
+        CHECK(lbl.has_class(&lv_obj_class));
+    }
+
+    SUBCASE("inherits_from<Box>() — all widgets inherit lv_obj") {
+        CHECK(lv::ObjectRef(btn.get()).inherits_from<lv::Box>());
+        CHECK(lv::ObjectRef(lbl.get()).inherits_from<lv::Box>());
+    }
+
+    SUBCASE("as<T>() round-trips successfully") {
+        lv::ObjectRef generic(btn.get());
+        auto recovered = generic.as<lv::Button>();
+        CHECK(recovered);
+        CHECK(recovered.get() == btn.get());
+    }
+
+    SUBCASE("as<T>() returns null on mismatch") {
+        lv::ObjectRef generic(btn.get());
+        auto wrong = generic.as<lv::Label>();
+        CHECK_FALSE(wrong); // T(wrap, nullptr) -> null
+        CHECK(wrong.get() == nullptr);
+    }
+
+    SUBCASE("as<T>() mismatch does not create new LVGL objects") {
+        // Regression: previously `T()` was used on mismatch, which for
+        // types like Screen would have allocated via lv_obj_create().
+        // Screen doesn't satisfy has_lv_class (it's a facade over
+        // lv_obj_class), so it can't be the target — but we still
+        // verify the general invariant here: mismatching to Label
+        // must not allocate.
+        const uint32_t before = lv::ref(lv.screen()).child_count();
+        lv::ObjectRef generic(btn.get());
+        (void) generic.as<lv::Label>();
+        const uint32_t after = lv::ref(lv.screen()).child_count();
+        CHECK(before == after);
+    }
+}
+
+// ============================================================
+// Style transitions
+// ============================================================
+
+TEST_CASE("TransitionDsc + Style::transition") {
+    LvglFixture lv;
+    auto parent = lv::ref(lv.screen());
+    auto btn = lv::Button::create(parent);
+
+    // Animate bg_color and radius over 300ms, 10ms delay
+    static const lv::TransitionDsc trans(
+        { LV_STYLE_BG_COLOR, LV_STYLE_RADIUS },
+        300, 10);
+
+    SUBCASE("TransitionDsc exposes a valid pointer") {
+        CHECK(trans.get() != nullptr);
+    }
+
+    SUBCASE("Style::transition attaches descriptor") {
+        lv::Style s;
+        s.bg_color(lv::rgb(0x123456)).transition(trans);
+        // Style::transition is a fluent setter: the style has the transition
+        // pointer stored internally. Attaching it to an object is the way to
+        // verify end-to-end.
+        btn.add_style(s);
+        // No crash + layout still works
+        lv::ref(lv.screen()).update_layout();
+    }
+
+    SUBCASE("StyleMixin::transition on object directly") {
+        btn.transition(trans).bg_color(lv::rgb(0xAABBCC));
+        lv::ref(lv.screen()).update_layout();
+    }
+}
+
+// ============================================================
+// Math helpers
+// ============================================================
+
+TEST_CASE("lv::math helpers") {
+    SUBCASE("map linearly interpolates") {
+        CHECK(lv::math::map(50, 0, 100, 0, 200) == 100);
+        CHECK(lv::math::map(0,  0, 100, 10, 20) == 10);
+        CHECK(lv::math::map(100, 0, 100, 10, 20) == 20);
+    }
+
+    SUBCASE("pow returns integer powers") {
+        CHECK(lv::math::pow(2, 10) == 1024);
+        CHECK(lv::math::pow(3, 4) == 81);
+    }
+
+    SUBCASE("rand stays within bounds") {
+        lv::math::rand_seed(42);
+        for (int i = 0; i < 50; ++i) {
+            auto r = lv::math::rand(10, 20);
+            CHECK(r >= 10);
+            CHECK(r <= 20);
+        }
+    }
+
+    SUBCASE("trigo_sin/cos are scaled to trigo_sin_max") {
+        // sin(0) == 0, sin(90) == +max, cos(90) == 0
+        CHECK(lv::math::trigo_sin(0) == 0);
+        CHECK(lv::math::trigo_sin(90) == lv::math::trigo_sin_max);
+        CHECK(lv::math::trigo_cos(90) == 0);
+        CHECK(lv::math::trigo_cos(0) == lv::math::trigo_sin_max);
+    }
+}
+
+// ============================================================
+// Palette helpers
+// ============================================================
+
+TEST_CASE("lv::palette returns Material palette colors") {
+    auto red      = lv::palette::main(LV_PALETTE_RED);
+    auto red_light = lv::palette::lighten(LV_PALETTE_RED, 3);
+    auto red_dark  = lv::palette::darken(LV_PALETTE_RED, 3);
+
+    // lighten/darken should produce different colors than main
+    CHECK(lv::color_to_u32(red) != lv::color_to_u32(red_light));
+    CHECK(lv::color_to_u32(red) != lv::color_to_u32(red_dark));
+    // and lighten ≠ darken
+    CHECK(lv::color_to_u32(red_light) != lv::color_to_u32(red_dark));
+}

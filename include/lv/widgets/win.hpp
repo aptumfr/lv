@@ -26,6 +26,9 @@ public:
 
     constexpr Window(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_win_class; }
+
     [[nodiscard]] static Window create(lv_obj_t* parent) {
         return Window(wrap, lv_win_create(parent));
     }

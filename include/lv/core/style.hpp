@@ -10,7 +10,10 @@
 
 #include <lvgl.h>
 #include <cstdint>
+#include <cstddef>
 #include <type_traits>
+
+#include "transition.hpp"
 
 namespace lv {
 
@@ -521,6 +524,20 @@ public:
         lv_style_set_translate_y(&m_style, y);
         return *this;
     }
+
+    // ==================== Transition ====================
+
+    /// Attach a transition descriptor.
+    ///
+    /// The caller must keep @p dsc alive for the entire time any object
+    /// referencing this style is alive — LVGL stores the pointer.
+    /// TransitionDsc is non-movable precisely to make this a compile error
+    /// rather than a dangling pointer.
+    template<std::size_t N>
+    Style& transition(const TransitionDsc<N>& dsc) noexcept {
+        lv_style_set_transition(&m_style, dsc.get());
+        return *this;
+    }
 };
 
 
@@ -993,6 +1010,21 @@ public:
     /// Set translate Y
     Derived& translate_y(int32_t y, lv_style_selector_t sel = 0) noexcept {
         lv_obj_set_style_translate_y(obj(), y, sel);
+        return *static_cast<Derived*>(this);
+    }
+
+    // ==================== Transition ====================
+
+    /// Attach a transition descriptor to this object's inline style for the
+    /// given part/state selector.
+    ///
+    /// The caller must keep @p dsc alive while this object exists — LVGL
+    /// stores the pointer. TransitionDsc is non-movable to make this a
+    /// compile error rather than a dangling-pointer bug.
+    template<std::size_t N>
+    Derived& transition(const TransitionDsc<N>& dsc,
+                        lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_transition(obj(), dsc.get(), sel);
         return *static_cast<Derived*>(this);
     }
 

@@ -12,6 +12,7 @@
 #include <lvgl.h>
 #include <utility>
 #include <cstdint>
+#include <concepts>
 #include "wrap.hpp"
 #include "version.hpp"
 
@@ -21,6 +22,42 @@ namespace lv {
 class Style;
 class ObjectRef;
 class Display;
+
+// ==================== Type Traits ====================
+
+namespace detail {
+
+/**
+ * @brief Constrains type-identification templates on ObjectView.
+ *
+ * A wrapper type @p T participates in `is<T>()` / `inherits_from<T>()` /
+ * `as<T>()` only if it exposes a static `class_ptr()` that returns the
+ * LVGL class it wraps.
+ *
+ * @note The following wrappers do NOT satisfy this concept — deliberately:
+ *
+ *   - `lv::Flex`, `lv::Grid`, `lv::Screen` — all facades over
+ *     `&lv_obj_class` (the same class `lv::Box` uses), so a class-
+ *     level check can't distinguish them. If they satisfied the
+ *     concept, `obj.is<Flex>()` would return `true` for any plain
+ *     container regardless of layout, masking real logic bugs.
+ *     Detect flex/grid via `get_layout()`, and screens via
+ *     `parent() == nullptr`.
+ *
+ *   - `lv::Lottie`, `lv::GLTF` — LVGL builds their class pointers
+ *     privately (no `extern` declaration), so they cannot be
+ *     referenced from user code. Manufacturing a `class_ptr()` for
+ *     these would be a fake contract.
+ *
+ * Attempting `obj.is<Flex>()` / `as<Screen>()` / etc. on an opt-out
+ * type fails to compile with a clear concept-constraint error.
+ */
+template<typename T>
+concept has_lv_class = requires {
+    { T::class_ptr() } -> std::convertible_to<const lv_obj_class_t*>;
+};
+
+} // namespace detail
 
 // ==================== Feature Detection ====================
 
@@ -157,6 +194,60 @@ public:
     /// Check if object has flag
     [[nodiscard]] bool has_flag(lv_obj_flag_t flag) const noexcept {
         return lv_obj_has_flag(m_obj, flag);
+    }
+
+    // ==================== Type Identification ====================
+
+    /// Check that the object's exact class matches @p cls (no inheritance).
+    /// Equivalent to LVGL's `lv_obj_check_type`.
+    [[nodiscard]] bool check_type(const lv_obj_class_t* cls) const noexcept {
+        return lv_obj_check_type(m_obj, cls);
+    }
+
+    /// Check that the object's class is @p cls or any descendant of it.
+    /// Equivalent to LVGL's `lv_obj_has_class`.
+    [[nodiscard]] bool has_class(const lv_obj_class_t* cls) const noexcept {
+        return lv_obj_has_class(m_obj, cls);
+    }
+
+    /// Exact-type check for a C++ widget wrapper.
+    ///
+    /// Usage: `if (child.is<lv::Label>()) { ... }`
+    ///
+    /// Constrained to wrappers that expose `T::class_ptr()` — most
+    /// distinct LVGL widgets. See `detail::has_lv_class` for which
+    /// families deliberately opt out (Flex/Grid/Screen/Lottie/GLTF).
+    template<detail::has_lv_class T>
+    [[nodiscard]] bool is() const noexcept {
+        return lv_obj_check_type(m_obj, T::class_ptr());
+    }
+
+    /// Inheritance-aware check for a C++ widget wrapper.
+    /// True if the object is of type @p T or any widget derived from it.
+    template<detail::has_lv_class T>
+    [[nodiscard]] bool inherits_from() const noexcept {
+        return lv_obj_has_class(m_obj, T::class_ptr());
+    }
+
+    /// Typed conversion to a C++ widget wrapper.
+    ///
+    /// Returns a valid @p T wrapping this object if the exact class
+    /// matches; otherwise returns a null @p T (`T(wrap, nullptr)`).
+    ///
+    /// Usage:
+    /// @code
+    ///   if (auto lbl = child.as<lv::Label>()) lbl.text("hi");
+    /// @endcode
+    ///
+    /// @note The mismatch path uses the `(wrap_t, lv_obj_t*)` constructor
+    ///       with a null pointer — NOT the default constructor — because
+    ///       some wrappers (e.g. `lv::Screen`) create a new LVGL object
+    ///       in their default constructor, which would leak on mismatch.
+    ///       Every type satisfying `has_lv_class` provides the wrap
+    ///       constructor (that's the insertion point for `class_ptr()`).
+    template<detail::has_lv_class T>
+    [[nodiscard]] T as() const noexcept {
+        return is<T>() ? T(wrap, m_obj) : T(wrap, nullptr);
     }
 
     // ==================== Parent/Child ====================

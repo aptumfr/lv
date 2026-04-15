@@ -25,6 +25,9 @@ public:
     constexpr Dropdown() noexcept : ObjectView(nullptr) {}
     constexpr Dropdown(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_dropdown_class; }
+
     [[nodiscard]] static Dropdown create(lv_obj_t* parent) {
         return Dropdown(wrap, lv_dropdown_create(parent));
     }

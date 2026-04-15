@@ -27,6 +27,9 @@ public:
     constexpr Checkbox() noexcept : ObjectView(nullptr) {}
     constexpr Checkbox(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_checkbox_class; }
+
     [[nodiscard]] static Checkbox create(lv_obj_t* parent) {
         return Checkbox(wrap, lv_checkbox_create(parent));
     }

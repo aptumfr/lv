@@ -35,6 +35,9 @@ public:
     /// Wrap existing button object
     constexpr Button(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// LVGL class pointer (for `is<T>() / as<T>()` type identification).
+    static constexpr const lv_obj_class_t* class_ptr() noexcept { return &lv_button_class; }
+
     /**
      * @brief Create a new Button widget
      * @param parent Parent object

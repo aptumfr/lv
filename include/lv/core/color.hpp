@@ -87,6 +87,26 @@ inline lv_color_hsv_t rgb_to_hsv(lv_color_t color) noexcept {
     return lv_color_to_hsv(color);
 }
 
+// ==================== Material Palette ====================
+
+namespace palette {
+    /// Material palette identifier (alias for lv_palette_t).
+    using Id = lv_palette_t;
+
+    /// Main color of a palette entry.
+    [[nodiscard]] inline lv_color_t main(Id p) noexcept { return lv_palette_main(p); }
+
+    /// Lightened palette color. @p level 1..5 (LVGL clamps out-of-range).
+    [[nodiscard]] inline lv_color_t lighten(Id p, uint8_t level) noexcept {
+        return lv_palette_lighten(p, level);
+    }
+
+    /// Darkened palette color. @p level 1..4.
+    [[nodiscard]] inline lv_color_t darken(Id p, uint8_t level) noexcept {
+        return lv_palette_darken(p, level);
+    }
+} // namespace palette
+
 // ==================== Opacity Constants ====================
 
 namespace opa {
