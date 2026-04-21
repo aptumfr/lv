@@ -129,6 +129,21 @@ public:
         return *this;
     }
 
+    // ==================== Lifecycle ====================
+
+    /// Signal that flushing is complete (call from flush callback)
+    void flush_ready() noexcept {
+        lv_display_flush_ready(m_display);
+    }
+
+    /// Delete the display
+    void del() noexcept {
+        if (m_display) {
+            lv_display_delete(m_display);
+            m_display = nullptr;
+        }
+    }
+
     // ==================== Static ====================
 
     /// Get default display

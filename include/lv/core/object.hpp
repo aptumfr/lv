@@ -198,6 +198,11 @@ public:
 
     // ==================== Type Identification ====================
 
+    /// Get the object's LVGL class pointer.
+    [[nodiscard]] const lv_obj_class_t* get_class() const noexcept {
+        return lv_obj_get_class(m_obj);
+    }
+
     /// Check that the object's exact class matches @p cls (no inheritance).
     /// Equivalent to LVGL's `lv_obj_check_type`.
     [[nodiscard]] bool check_type(const lv_obj_class_t* cls) const noexcept {
@@ -914,6 +919,18 @@ public:
     /// Scroll to given coordinates
     Derived& scroll_to(int32_t x, int32_t y, lv_anim_enable_t anim_en) noexcept {
         lv_obj_scroll_to(obj(), x, y, anim_en);
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Scroll to a horizontal position
+    Derived& scroll_to_x(int32_t x, lv_anim_enable_t anim_en) noexcept {
+        lv_obj_scroll_to_x(obj(), x, anim_en);
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Scroll to a vertical position
+    Derived& scroll_to_y(int32_t y, lv_anim_enable_t anim_en) noexcept {
+        lv_obj_scroll_to_y(obj(), y, anim_en);
         return *static_cast<Derived*>(this);
     }
 

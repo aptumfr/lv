@@ -15,7 +15,7 @@ static bool s_lv_initialized = false;
 static lv_display_t* s_disp = nullptr;
 
 static void flush_cb(lv_display_t* d, const lv_area_t*, uint8_t*) {
-    lv_display_flush_ready(d);
+    lv::Display(d).flush_ready();
 }
 
 struct LvglFixture {
