@@ -176,6 +176,8 @@ public:
         return lv_image_get_blend_mode(m_obj);
     }
 
+    // ==================== Generated Wrappers ====================
+#include "image.gen.hpp"
 };
 
 } // namespace lv

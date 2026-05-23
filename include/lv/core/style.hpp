@@ -538,6 +538,9 @@ public:
         lv_style_set_transition(&m_style, dsc.get());
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "style.gen.hpp"
 };
 
 
@@ -1310,6 +1313,9 @@ public:
     [[nodiscard]] int32_t get_style_translate_y(lv_part_t part = LV_PART_MAIN) const noexcept {
         return get_translate_y(part);
     }
+
+    // ==================== Generated Wrappers ====================
+#include "style_mixin.gen.hpp"
 };
 
 // Color helpers moved to core/color.hpp

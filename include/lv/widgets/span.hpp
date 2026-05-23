@@ -176,6 +176,9 @@ public:
         lv_obj_set_width(m_obj, w);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "span.gen.hpp"
 };
 
 } // namespace lv

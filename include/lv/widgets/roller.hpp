@@ -122,6 +122,9 @@ public:
         return *this;
     }
 
+    // ==================== Generated Wrappers ====================
+#include "roller.gen.hpp"
+
 #if LV_USE_OBSERVER
     /// Bind roller selection to an integer subject
     Roller& bind_value(lv_subject_t* subject) noexcept {

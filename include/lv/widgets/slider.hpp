@@ -201,6 +201,9 @@ public:
         return *this;
     }
 
+    // ==================== Generated Wrappers ====================
+#include "slider.gen.hpp"
+
 #if LV_USE_OBSERVER
     /// Bind slider value to an integer subject
     Slider& bind(lv_subject_t* subject) noexcept {

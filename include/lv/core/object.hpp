@@ -317,8 +317,9 @@ public:
     }
 
     /// Delete all children
-    void clean() noexcept {
+    ObjectView& clean() noexcept {
         lv_obj_clean(m_obj);
+        return *this;
     }
 
     // ==================== Geometry Getters ====================
@@ -1001,6 +1002,9 @@ public:
         return nullptr;
 #endif
     }
+
+    // ==================== Generated Wrappers ====================
+#include "object_mixin.gen.hpp"
 };
 
 } // namespace lv

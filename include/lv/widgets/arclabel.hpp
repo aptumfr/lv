@@ -261,6 +261,9 @@ public:
         return lv_arclabel_get_text_angle(m_obj);
     }
 #endif
+
+    // ==================== Generated Wrappers ====================
+#include "arclabel.gen.hpp"
 };
 
 } // namespace lv

@@ -132,6 +132,9 @@ public:
         lv_obj_set_height(m_obj, h);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "buttonmatrix.gen.hpp"
 };
 
 } // namespace lv

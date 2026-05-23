@@ -86,6 +86,9 @@ public:
         lv_obj_set_style_arc_width(m_obj, w, LV_PART_MAIN);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "spinner.gen.hpp"
 };
 
 } // namespace lv

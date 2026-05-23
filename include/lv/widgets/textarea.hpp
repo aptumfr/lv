@@ -201,6 +201,8 @@ public:
         return *this;
     }
 
+    // ==================== Generated Wrappers ====================
+#include "textarea.gen.hpp"
 };
 
 } // namespace lv

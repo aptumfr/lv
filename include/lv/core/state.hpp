@@ -252,6 +252,9 @@ public:
     lv_observer_t* observe_obj(lv_observer_cb_t cb, ObjType target_obj, void* user_data = nullptr) noexcept {
         return lv_subject_add_observer_obj(&m_subject, cb, target_obj.get(), user_data);
     }
+
+    // ==================== Generated Wrappers ====================
+#include "state.gen.hpp"
 };
 
 

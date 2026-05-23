@@ -1,0 +1,30 @@
+# gen_overrides.yaml — manual overrides for gen_wrappers.py
+#
+# skip: functions to never generate wrappers for
+# rename: C function → desired C++ method name
+
+skip:
+  # va_list — not useful in C++
+  - lv_label_set_text_vfmt
+  - lv_textarea_set_text_vfmt
+  # _class variables (not functions)
+  - _lv_
+  # Dangerous / internal — should not be exposed in the C++ API
+  - lv_obj_class_init_obj
+  - lv_obj_destruct
+  - lv_obj_refr_pos
+  - lv_obj_refr_size
+  - lv_obj_refresh_self_size
+  - lv_obj_move_to
+  - lv_obj_move_children_by
+  - lv_obj_mark_layout_as_dirty
+  - lv_obj_scrollbar_invalidate
+  - lv_obj_update_layer_type
+  - lv_obj_null_on_delete
+  - lv_obj_init_draw_blur_dsc
+  - lv_obj_scroll_by_raw
+  - lv_obj_style_create_transition
+  - lv_obj_style_state_compare
+  - lv_obj_property_get_id
+
+rename: {}

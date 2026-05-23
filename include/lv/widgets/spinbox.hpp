@@ -135,6 +135,9 @@ public:
         lv_obj_set_width(m_obj, w);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "spinbox.gen.hpp"
 };
 
 } // namespace lv

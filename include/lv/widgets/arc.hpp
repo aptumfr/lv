@@ -263,6 +263,9 @@ public:
         return *this;
     }
 
+    // ==================== Generated Wrappers ====================
+#include "arc.gen.hpp"
+
 #if LV_USE_OBSERVER
     /// Bind arc value to an integer subject
     Arc& bind_value(lv_subject_t* subject) noexcept {

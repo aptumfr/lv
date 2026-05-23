@@ -121,6 +121,9 @@ public:
         lv_obj_set_size(m_obj, w, h);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "table.gen.hpp"
 };
 
 } // namespace lv

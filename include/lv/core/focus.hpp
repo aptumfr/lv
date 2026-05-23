@@ -161,6 +161,9 @@ public:
         return static_cast<T*>(lv_group_get_user_data(m_group));
     }
 #endif
+
+    // ==================== Generated Wrappers ====================
+#include "focus.gen.hpp"
 };
 
 // Zero-cost check: wrapper must be pointer-sized

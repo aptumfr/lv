@@ -155,6 +155,9 @@ public:
     [[nodiscard]] static Display create(int32_t width, int32_t height) noexcept {
         return Display(lv_display_create(width, height));
     }
+
+    // ==================== Generated Wrappers ====================
+#include "display.gen.hpp"
 };
 
 inline Display ObjectView::display() const noexcept {
@@ -217,6 +220,7 @@ public:
     SDLDisplay(int32_t width, int32_t height)
         : Display(lv_sdl_window_create(width, height)) {
         lv_sdl_mouse_create();
+        lv_sdl_keyboard_create();
     }
 };
 #endif

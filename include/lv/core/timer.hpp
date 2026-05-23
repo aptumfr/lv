@@ -237,6 +237,9 @@ public:
         m_owned = false;
         return m_timer;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "timer.gen.hpp"
 };
 
 // ==================== Timer Helpers ====================

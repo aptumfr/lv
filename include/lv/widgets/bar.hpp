@@ -193,6 +193,9 @@ public:
         return *this;
     }
 
+    // ==================== Generated Wrappers ====================
+#include "bar.gen.hpp"
+
 #if LV_USE_OBSERVER
     /// Bind bar value to an integer subject
     Bar& bind_value(lv_subject_t* subject) noexcept {

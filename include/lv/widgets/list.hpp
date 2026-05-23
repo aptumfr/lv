@@ -78,6 +78,9 @@ public:
         lv_obj_set_height(m_obj, h);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "list.gen.hpp"
 };
 
 } // namespace lv

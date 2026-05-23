@@ -175,6 +175,9 @@ public:
     [[nodiscard]] bool is_hidden() const noexcept {
         return lv_obj_has_flag(m_obj, LV_OBJ_FLAG_HIDDEN);
     }
+
+    // ==================== Generated Wrappers ====================
+#include "keyboard.gen.hpp"
 };
 
 } // namespace lv

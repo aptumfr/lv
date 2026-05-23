@@ -268,6 +268,9 @@ public:
         return *this;
     }
 #endif
+
+    // ==================== Generated Wrappers ====================
+#include "indev.gen.hpp"
 };
 
 // ==================== Input Device Helpers ====================

@@ -448,6 +448,9 @@ public:
     lv_anim_t* start() noexcept {
         return lv_anim_start(&m_anim);
     }
+
+    // ==================== Generated Wrappers ====================
+#include "anim.gen.hpp"
 };
 
 // ==================== Object Animation Helpers ====================

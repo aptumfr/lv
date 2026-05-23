@@ -133,6 +133,9 @@ public:
         lv_obj_set_size(m_obj, LV_PCT(100), LV_PCT(100));
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "tabview.gen.hpp"
 };
 
 } // namespace lv

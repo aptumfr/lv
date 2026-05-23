@@ -164,6 +164,9 @@ public:
         lv_obj_set_size(m_obj, w, h);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "scale.gen.hpp"
 };
 
 } // namespace lv

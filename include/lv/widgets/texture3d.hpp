@@ -97,6 +97,9 @@ public:
     Texture3D& no_flip() noexcept {
         return flip(false, false);
     }
+
+    // ==================== Generated Wrappers ====================
+#include "texture3d.gen.hpp"
 };
 
 } // namespace lv

@@ -194,6 +194,9 @@ public:
     [[nodiscard]] ObjectRef list() const noexcept {
         return ObjectRef(lv_dropdown_get_list(m_obj));
     }
+
+    // ==================== Generated Wrappers ====================
+#include "dropdown.gen.hpp"
 };
 
 } // namespace lv

@@ -92,6 +92,9 @@ public:
         lv_obj_set_style_line_opa(m_obj, opa, 0);
         return *this;
     }
+
+    // ==================== Generated Wrappers ====================
+#include "line.gen.hpp"
 };
 
 } // namespace lv

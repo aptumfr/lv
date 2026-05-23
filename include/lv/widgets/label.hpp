@@ -234,6 +234,9 @@ public:
 
     // ==================== Binding (for reactive state) ====================
 
+    // ==================== Generated Wrappers ====================
+#include "label.gen.hpp"
+
 #if LV_USE_OBSERVER
     /// Bind label text to an integer subject with format
     Label& bind_text(lv_subject_t* subject, const char* fmt = "%d") noexcept {
